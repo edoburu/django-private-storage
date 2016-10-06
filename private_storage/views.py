@@ -5,7 +5,8 @@ from django.http import HttpResponseForbidden, Http404
 from django.views.generic import View
 
 from . import appconfig
-from .servers import get_server_class, PrivateFile
+from .models import PrivateFile
+from .servers import get_server_class
 from .storage import private_storage
 from .utils import import_symbol
 
