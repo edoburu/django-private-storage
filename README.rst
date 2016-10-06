@@ -43,7 +43,7 @@ In a Django model, add the ``PrivateFileField``:
 
     class MyModel(models.Model):
         title = models.CharField("Title", max_length=200)
-        file = PrivateFileField("Title")
+        file = PrivateFileField("Title", upload_to="mymodel")
 
 The ``PrivateFileField`` also accepts the following kwargs:
 
@@ -61,6 +61,13 @@ Defining access rules
 The ``PRIVATE_STORAGE_AUTH_FUNCTION`` defines which user may access the files.
 By default, this only includes superusers.
 
+The following options are available out of the box:
+
+* ``private_storage.permissions.allow_authenticated``
+* ``private_storage.permissions.allow_staff``
+* ``private_storage.permissions.allow_superuser``
+
+You can create a custom function, and use that instead.
 The function receives a ``private_storate.models.PrivateFile`` object,
 which has the following fields:
 
