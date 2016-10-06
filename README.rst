@@ -4,6 +4,9 @@ django-private-storage
 This module offers a private media file storage,
 so user uploads can be protected behind a login.
 
+It uses the Django storage API's internally,
+so all form rendering and admin integration work out of the box.
+
 Installation
 ============
 
@@ -47,10 +50,11 @@ In a Django model, add the ``PrivateFileField``:
 
 The ``PrivateFileField`` also accepts the following kwargs:
 
-* ``upload_to``: the subfolder in the ``PRIVATE_STORAGE_ROOT``.
+* ``upload_to``: the optional subfolder in the ``PRIVATE_STORAGE_ROOT``.
 * ``upload_subfolder``: a function that defines the folder, it receives the current model ``instance``.
 * ``content_types``: allowed content types
 * ``max_file_size``: maximum file size.
+* ``storage``: the storage object to use, defaults to ``private_storage.storage.private_storage``
 
 Other topics
 ============
@@ -119,6 +123,53 @@ Other webservers
 
 The ``PRIVATE_STORAGE_SERVER`` may also point to a dotted Python class path.
 Implement a class with a static ``serve(private_file)`` method.
+
+Using multiple storages
+-----------------------
+
+The ``PrivateFileField`` accepts a ``storage`` kwarg,
+hence you can initialize multiple ``private_storage.storage.PrivateStorage`` objects,
+each providing files from a different ``location`` and ``base_url``.
+
+For example:
+
+.. code-block:: python
+
+
+    from django.db import models
+    from private_storage.fields import PrivateFileField
+    from private_storage.storage import PrivateStorage
+
+    my_storage = PrivateStorage(
+        location='/path/to/storage2/',
+        base_url='/private-documents2/'
+    )
+
+    class MyModel(models.Model):
+        file = PrivateFileField(storage=my_storage)
+
+
+Then create a view to serve those files:
+
+.. code-block:: python
+
+    from private_storage.views import PrivateStorageView
+    from .models import my_storage
+
+    class MyStorageView(PrivateStorageView):
+        storage = my_storage
+
+        def can_access_file(self, private_file):
+            # This overrides PRIVATE_STORAGE_AUTH_FUNCTION
+            return self.request.is_superuser
+
+And expose that URL:
+
+.. code-block:: python
+
+    urlpatterns += [
+        url(^private-documents2/(?P<path>.*)$', views.MyStorageView.as_view()),
+    ]
 
 Contributing
 ------------
