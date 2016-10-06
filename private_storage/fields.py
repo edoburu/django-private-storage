@@ -19,6 +19,10 @@ class PrivateFileField(models.FileField):
     - ``content_types``: list of allowed content types.
     - ``max_file_size``: maximum file size.
     """
+    default_error_messages = {
+        'invalid_file_type': _('File type not supported.'),
+        'file_too_large': _('The file may not be larger then {max_size}.'),
+    }
 
     def __init__(self, *args, **kwargs):
         self._upload = kwargs.pop('upload_subfolder', None)
@@ -39,12 +43,12 @@ class PrivateFileField(models.FileField):
             content_type = file.content_type
 
             if self.content_types and content_type not in self.content_types:
-                raise ValidationError(_('Filetype not supported.'))
+                raise ValidationError(self.error_messages['invalid_file_type'])
 
             if self.max_file_size and file.size > self.max_file_size:
-                raise ValidationError(_('Please keep the file size under {max_size}, the uploaded file is {cur_size}').format(
+                raise ValidationError(self.error_messages['file_too_large'].format(
                     max_size=filesizeformat(self.max_upload_size),
-                    cur_size=filesizeformat(file.size)
+                    size=filesizeformat(file.size)
                 ))
 
         return data
