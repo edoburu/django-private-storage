@@ -17,6 +17,17 @@ Installation
 Configuration
 -------------
 
+Add to the settings:
+
+.. code-block:: python
+
+    INSTALLED_APPS += (
+        'private_storage',
+    )
+
+    PRIVATE_STORAGE_ROOT = '/path/to/private-media/'
+    PRIVATE_STORAGE_AUTH_FUNCTION = 'apps.utils.private_storage.permissions.allow_staff'
+
 Add to ``urls.py``:
 
 .. code-block:: python
@@ -26,13 +37,6 @@ Add to ``urls.py``:
     urlpatterns += [
         url('^private-media/', include(private_storage.urls)),
     ]
-
-Add to the settings:
-
-.. code-block:: python
-
-    PRIVATE_STORAGE_ROOT = '/path/to/private-media/'
-    PRIVATE_STORAGE_AUTH_FUNCTION = 'apps.utils.private_storage.permissions.allow_staff'
 
 Usage
 -----
