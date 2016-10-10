@@ -1,5 +1,7 @@
 #-*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+import logging
 import os
 
 import django
@@ -10,6 +12,9 @@ from django.template.defaultfilters import filesizeformat
 from django.utils.encoding import smart_str
 from django.utils.translation import ugettext_lazy as _
 from .storage import private_storage
+
+logger = logging.getLogger(__name__)
+
 
 
 class PrivateFileField(models.FileField):
@@ -45,6 +50,7 @@ class PrivateFileField(models.FileField):
             content_type = file.content_type
 
             if self.content_types and content_type not in self.content_types:
+                logger.debug('Rejected uploaded file type: %s', content_type)
                 raise ValidationError(self.error_messages['invalid_file_type'])
 
             if self.max_file_size and file.size > self.max_file_size:
