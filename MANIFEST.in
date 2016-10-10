@@ -1,12 +1,7 @@
 include AUTHORS
 include README.rst
 include LICENSE
-recursive-include fluent_contents/locale *
-recursive-include fluent_contents/templates *.html
-recursive-include fluent_contents/static *
-recursive-include fluent_contents/plugins/*/static *
-recursive-include fluent_contents/plugins/*/templates *.html
-recursive-include fluent_contents/tests/testapp/templates *.html
+recursive-include private_storage/locale *.mo *.po
 global-exclude .DS_Store
 global-exclude Thumbs.db
 global-exclude Desktop.ini
