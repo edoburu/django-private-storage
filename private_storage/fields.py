@@ -55,7 +55,7 @@ class PrivateFileField(models.FileField):
 
             if self.max_file_size and file.size > self.max_file_size:
                 raise ValidationError(self.error_messages['file_too_large'].format(
-                    max_size=filesizeformat(self.max_upload_size),
+                    max_size=filesizeformat(self.max_file_size),
                     size=filesizeformat(file.size)
                 ))
 
