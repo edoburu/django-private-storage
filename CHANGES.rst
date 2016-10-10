@@ -1,8 +1,15 @@
 Changelog
 =========
 
-Version 1.0
------------
+Version 1.0.1 (2016-10-10)
+------------------------
+
+* Fixed packaging NL translation
+* Fixed error message for too large files.
+
+
+Version 1.0 (2016-10-10)
+------------------------
 
 First PyPI release.
 
