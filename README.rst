@@ -50,7 +50,7 @@ In a Django model, add the ``PrivateFileField``:
 
     class MyModel(models.Model):
         title = models.CharField("Title", max_length=200)
-        file = PrivateFileField("Title", upload_to="mymodel")
+        file = PrivateFileField("File")
 
 The ``PrivateFileField`` also accepts the following kwargs:
 
