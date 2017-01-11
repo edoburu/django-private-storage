@@ -3,6 +3,8 @@ Django Storage interface
 """
 from django.core.files.storage import FileSystemStorage
 from django.core.urlresolvers import reverse_lazy
+from django.utils.encoding import force_text
+
 from . import appconfig
 
 __all__ = (
@@ -30,6 +32,11 @@ class PrivateStorage(FileSystemStorage):
             # However, as the super method checks for base_url.endswith('/'),
             # the attribute is overwritten here to avoid breaking lazy evaluation.
             self.base_url = reverse_lazy('serve_private_file', kwargs={'path': ''})
+
+    def url(self, name):
+        # Make sure reverse_lazy() is evaluated, as Python 3 won't do this here.
+        self.base_url = force_text(self.base_url)
+        return super(PrivateStorage, self).url(name)
 
 
 # Singleton instance.
