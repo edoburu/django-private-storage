@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Version 1.0.2 (2017-01-11)
+--------------------------
+
+* Fixed Python 3 issue with lazy URL resolving.
+* Fixed ``TypeError`` when calling the access check function.
+* Fixed file serving with ``PRIVATE_STORAGE_SERVER`` set to ``django``.
+
+
 Version 1.0.1 (2016-10-10)
 ------------------------
 
