@@ -17,7 +17,7 @@ def get_server_class(path):
     if '.' in path:
         return import_symbol(path)
     elif path == 'django':
-        return DjangoServer()
+        return DjangoServer
     elif path == 'apache':
         return ApacheXSendfileServer
     elif path == 'nginx':
