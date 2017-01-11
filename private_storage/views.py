@@ -20,7 +20,7 @@ class PrivateStorageView(View):
     storage = private_storage
 
     #: The authorisation rule for accessing
-    can_access_file = import_symbol(appconfig.PRIVATE_STORAGE_AUTH_FUNCTION)
+    can_access_file = staticmethod(import_symbol(appconfig.PRIVATE_STORAGE_AUTH_FUNCTION))
 
     #: Import the server class once
     server_class = get_server_class(appconfig.PRIVATE_STORAGE_SERVER)
