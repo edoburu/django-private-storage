@@ -90,6 +90,7 @@ class PrivateStorageDetailView(SingleObjectMixin, PrivateStorageView):
     def can_access_file(self, private_file):
         """
         The authorization rule for this view.
-        By default it reuses the settings, but this should likely be redefined.
+        By default it reuses the ``PRIVATE_STORAGE_AUTH_FUNCTION`` setting,
+        but this should likely be redefined.
         """
         return PrivateStorageView.can_access_file(private_file)

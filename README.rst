@@ -63,6 +63,41 @@ The ``PrivateFileField`` also accepts the following kwargs:
 Other topics
 ============
 
+Storing files on Amazon S3
+--------------------------
+
+The ``PRIVATE_STORAGE_CLASS`` setting can be redefined to point to a different storage class.
+The default is ``private_storage.storage.files.PrivateFileSystemStorage``, which uses
+a private media folder that ``PRIVATE_STORAGE_ROOT`` points to.
+
+Define one of these settings instead:
+
+.. code-block:: python
+
+    PRIVATE_STORAGE_CLASS = 'private_storage.storage.s3boto3.PrivateS3BotoStorage'
+
+    AWS_PRIVATE_STORAGE_BUCKET_NAME = 'private-files'  # bucket name
+
+This uses django-storages_ settings. Replace the prefix ``AWS_`` with ``AWS_PRIVATE_``.
+The following settings are reused when they don't have an corresponding ``AWS_PRIVATE_...`` setting:
+
+* ``AWS_ACCESS_KEY_ID``
+* ``AWS_SECRET_ACCESS_KEY``
+* ``AWS_S3_URL_PROTOCOL``
+* ``AWS_S3_REGION_NAME``
+* ``AWS_IS_GZIPPED``
+
+All other settings should be explicitly defined with ``AWS_PRIVATE_...`` settings.
+
+To have encryption either configure ``AWS_PRIVATE_S3_ENCRYPTION``
+and ``AWS_PRIVATE_S3_SIGNATURE_VERSION`` or use:
+
+.. code-block:: python
+
+    PRIVATE_STORAGE_CLASS = 'private_storage.storage.s3boto3.PrivateEncryptedS3BotoStorage'
+
+Make sure an encryption key is generated on Amazon.
+
 Defining access rules
 ---------------------
 
@@ -142,9 +177,9 @@ For example:
 
     from django.db import models
     from private_storage.fields import PrivateFileField
-    from private_storage.storage import PrivateStorage
+    from private_storage.storage.files import PrivateFileSystemStorage
 
-    my_storage = PrivateStorage(
+    my_storage = PrivateFileSystemStorage(
         location='/path/to/storage2/',
         base_url='/private-documents2/'
     )
@@ -180,3 +215,6 @@ Contributing
 
 This module is designed to be generic. In case there is anything you didn't like about it,
 or think it's not flexible enough, please let us know. We'd love to improve it!
+
+
+.. _django-storages: https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html

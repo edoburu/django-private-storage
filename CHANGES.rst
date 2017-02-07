@@ -1,6 +1,23 @@
 Changelog
 =========
 
+Version 1.1 (2017-02-07)
+------------------------
+
+* Allow to configure the storage class, using ``PRIVATE_STORAGE_CLASS``.
+  There are 3 storage classes available:
+
+ * ``private_storage.storage.files.PrivateFileSystemStorage`` - the original, default.
+ * ``private_storage.storage.s3boto3.PrivateS3BotoStorage`` - S3 bucket, based on django-storages_.
+ * ``private_storage.storage.s3boto3.PrivateEncryptedS3BotoStorage`` - S3 bucket with encryption.
+
+* Added ``PrivateStorageView.get_path()`` method for easier reuse.
+* Added ``PrivateStorageDetailView`` for easier reuse in projects.
+* Added ``@deconstructible`` for storage classes.
+* Added ``private_storage.servers.DjangoStreamingServer`` to support streaming data from non-filesystem storages.
+* Dropped Django 1.6 support.
+
+
 Version 1.0.2 (2017-01-11)
 --------------------------
 
@@ -10,7 +27,7 @@ Version 1.0.2 (2017-01-11)
 
 
 Version 1.0.1 (2016-10-10)
-------------------------
+--------------------------
 
 * Fixed packaging NL translation
 * Fixed error message for too large files.
@@ -23,3 +40,6 @@ First PyPI release.
 
 The module design has been stable for quite some time,
 so it's time to show this module to the public.
+
+
+.. _django-storages: https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
