@@ -4,6 +4,7 @@ Views to send private files.
 from django.http import HttpResponseForbidden, Http404
 from django.utils.module_loading import import_string
 from django.views.generic import View
+from django.views.generic.detail import SingleObjectMixin
 
 from . import appconfig
 from .models import PrivateFile
@@ -66,3 +67,29 @@ class PrivateStorageView(View):
         :rtype: django.http.HttpResponse
         """
         return self.server_class().serve(private_file)
+
+
+class PrivateStorageDetailView(SingleObjectMixin, PrivateStorageView):
+    """
+    Download a document based on an object ID.
+    This view can by used by third-party apps to implement their own download view.
+
+    Implement access controls by overriding :meth`get_queryset` or redefining :meth:`can_access_file`.
+    """
+    model = None  #
+    model_file_field = 'file'
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return super().get(request, *args, **kwargs)
+
+    def get_path(self):
+        file = getattr(self.object, 'file')
+        return file.path
+
+    def can_access_file(self, private_file):
+        """
+        The authorization rule for this view.
+        By default it reuses the settings, but this should likely be redefined.
+        """
+        return PrivateStorageView.can_access_file(private_file)
