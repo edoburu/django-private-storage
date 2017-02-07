@@ -6,10 +6,11 @@ import os
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.http import FileResponse, HttpResponse
+from django.http import HttpResponseNotModified
 from django.utils.http import http_date
 from django.utils.lru_cache import lru_cache
 from django.utils.module_loading import import_string
-from django.views.static import serve
+from django.views.static import serve, was_modified_since
 
 
 @lru_cache()
@@ -37,11 +38,17 @@ class DjangoStreamingServer(object):
 
     @staticmethod
     def serve(private_file):
+        # Support If-Last-Modified
+        mtime = private_file.modified_time.timestamp()
+        size = private_file.size
+        if not was_modified_since(private_file.request.META.get('HTTP_IF_MODIFIED_SINCE'), mtime, size):
+            return HttpResponseNotModified()
+
         # FileResponse will submit the file in 8KB chunks
         response = FileResponse(private_file.open())
         response['Content-Type'] = private_file.content_type
-        response['Content-Length'] = private_file.size
-        response["Last-Modified"] = http_date(private_file.modified_time.timestamp())
+        response['Content-Length'] = size
+        response["Last-Modified"] = http_date(mtime)
         return response
 
 
