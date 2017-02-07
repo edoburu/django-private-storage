@@ -91,6 +91,7 @@ All other settings should be explicitly defined with ``AWS_PRIVATE_...`` setting
 
 By default, all URLs in the admin return the direct S3 bucket URls, with the `query parameter authentication`_ enabled.
 When ``AWS_PRIVATE_QUERYSTRING_AUTH = False``, all file downloads are proxied through our ``PrivateFileView`` URL.
+This behavior can be enabled explicitly using ``PRIVATE_STORAGE_S3_REVERSE_PROXY = True``.
 
 To have encryption either configure ``AWS_PRIVATE_S3_ENCRYPTION``
 and ``AWS_PRIVATE_S3_SIGNATURE_VERSION`` or use:

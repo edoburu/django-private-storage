@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Version 1.1.1 (2017-02-17)
+--------------------------
+
+* Implement proxying S3 content when ``AWS_PRIVATE_QUERYSTRING_AUTH`` is disabled.
+  This can also be explicitly enabled using ``PRIVATE_STORAGE_S3_REVERSE_PROXY = True``.
+
 Version 1.1 (2017-02-07)
 ------------------------
 
