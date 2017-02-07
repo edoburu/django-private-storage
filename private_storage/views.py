@@ -85,7 +85,7 @@ class PrivateStorageDetailView(SingleObjectMixin, PrivateStorageView):
 
     def get_path(self):
         file = getattr(self.object, 'file')
-        return file.path
+        return file.name
 
     def can_access_file(self, private_file):
         """

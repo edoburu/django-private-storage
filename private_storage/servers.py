@@ -5,7 +5,8 @@ import os
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from django.http import HttpResponse
+from django.http import FileResponse, HttpResponse
+from django.utils.http import http_date
 from django.utils.lru_cache import lru_cache
 from django.utils.module_loading import import_string
 from django.views.static import serve
@@ -15,6 +16,8 @@ from django.views.static import serve
 def get_server_class(path):
     if '.' in path:
         return import_string(path)
+    elif path == 'streaming':
+        return DjangoStreamingServer
     elif path == 'django':
         return DjangoServer
     elif path == 'apache':
@@ -27,7 +30,22 @@ def get_server_class(path):
         )
 
 
-class DjangoServer(object):
+class DjangoStreamingServer(object):
+    """
+    Serve static files as streaming chunks in Django.
+    """
+
+    @staticmethod
+    def serve(private_file):
+        # FileResponse will submit the file in 8KB chunks
+        response = FileResponse(private_file.open())
+        response['Content-Type'] = private_file.content_type
+        response['Content-Length'] = private_file.size
+        response["Last-Modified"] = http_date(private_file.modified_time.timestamp())
+        return response
+
+
+class DjangoServer(DjangoStreamingServer):
     """
     Serve static files from the local filesystem through Django.
     This is a bad idea for most situations other than testing.
@@ -38,7 +56,14 @@ class DjangoServer(object):
     @staticmethod
     def serve(private_file):
         # This supports If-Modified-Since and sends the file in 8KB chunks
-        return serve(private_file.request, private_file.full_path, document_root='/', show_indexes=False)
+        try:
+            full_path = private_file.full_path
+        except NotImplementedError:
+            # S3 files, fall back to streaming server
+            return DjangoStreamingServer.serve(private_file)
+        else:
+            # Using Django's serve gives If-Modified-Since support out of the box.
+            return serve(private_file.request, full_path, document_root='/', show_indexes=False)
 
 
 class ApacheXSendfileServer(object):

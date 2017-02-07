@@ -1,5 +1,5 @@
 import mimetypes
-import os
+from django.core.files.storage import Storage, File
 
 from django.utils.functional import cached_property
 
@@ -11,7 +11,7 @@ class PrivateFile(object):
 
     def __init__(self, request, storage, relative_name):
         self.request = request
-        self.storage = storage
+        self.storage = storage  # type: Storage
         self.relative_name = relative_name
 
     @cached_property
@@ -19,13 +19,38 @@ class PrivateFile(object):
         # Not using self.storage.open() as the X-Sendfile needs a normal path.
         return self.storage.path(self.relative_name)
 
+    def open(self, mode='rb'):
+        """
+        Open the file for reading.
+        :rtype: django.core.files.storage.File
+        """
+        file = self.storage.open(self.relative_name, mode=mode)  # type: File
+        return file
+
     def exists(self):
-        return os.path.exists(self.full_path)
+        """
+        Check whether the file exists.
+        """
+        return self.storage.exists(self.relative_name)
 
     @cached_property
     def content_type(self):
         """
         Return the HTTP ``Content-Type`` header value for a filename.
         """
-        mimetype, encoding = mimetypes.guess_type(self.full_path)
+        mimetype, encoding = mimetypes.guess_type(self.relative_name)
         return mimetype or 'application/octet-stream'
+
+    @cached_property
+    def size(self):
+        """
+        Return the size of the file in bytes.
+        """
+        return self.storage.size(self.relative_name)
+
+    @cached_property
+    def modified_time(self):
+        """
+        Return the last-modified time
+        """
+        return self.storage.get_modified_time(self.relative_name)
