@@ -25,17 +25,29 @@ class PrivateStorageView(View):
     #: Import the server class once
     server_class = get_server_class(appconfig.PRIVATE_STORAGE_SERVER)
 
+    def get_path(self):
+        """
+        Determine the path for the object to provide.
+        This can be overwritten to combine the view with a different object retrieval.
+        """
+        return self.kwargs['path']
+
+    def get_private_file(self):
+        """
+        Return all relevant data in a single object, so this is easy to extend
+        and server implementations can pick what they need.
+        """
+        return PrivateFile(
+            request=self.request,
+            storage=self.storage,
+            relative_name=self.get_path()
+        )
+
     def get(self, request, *args, **kwargs):
         """
         Handle incoming GET requests
         """
-        # Wrap all relevant data in a single object,
-        # so this is easy to extend and server implementations can pick what they need.
-        private_file = PrivateFile(
-            request=self.request,
-            storage=self.storage,
-            relative_name=self.kwargs['path']
-        )
+        private_file = self.get_private_file()
 
         if not self.can_access_file(private_file):
             return HttpResponseForbidden('Private storage access denied')
@@ -48,6 +60,9 @@ class PrivateStorageView(View):
     def serve_file(self, private_file):
         """
         Serve the file that was retrieved from the storage.
-        The relative path can be found in ``self.kwargs['path']``.
+        The relative path can be found with ``private_file.relative_name``.
+
+        :type private_file: :class:`private_storage.models.PrivateFile`
+        :rtype: django.http.HttpResponse
         """
         return self.server_class().serve(private_file)
