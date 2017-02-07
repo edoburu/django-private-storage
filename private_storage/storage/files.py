@@ -3,11 +3,13 @@ Django Storage interface, using the file system backend.
 """
 from django.core.files.storage import FileSystemStorage
 from django.core.urlresolvers import reverse_lazy
+from django.utils.deconstruct import deconstructible
 from django.utils.encoding import force_text
 
 from private_storage import appconfig
 
 
+@deconstructible
 class PrivateFileSystemStorage(FileSystemStorage):
     """
     Interface to the Django storage system,

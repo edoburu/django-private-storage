@@ -1,7 +1,9 @@
+from django.utils.deconstruct import deconstructible
 from storages.backends.s3boto3 import S3Boto3Storage
 from storages.utils import setting
 
 
+@deconstructible
 class PrivateS3BotoStorage(S3Boto3Storage):
     """
     Private storage bucket for S3
@@ -34,6 +36,7 @@ class PrivateS3BotoStorage(S3Boto3Storage):
     use_ssl = setting('AWS_PRIVATE_S3_USE_SSL', True)
 
 
+@deconstructible
 class PrivateEncryptedS3BotoStorage(PrivateS3BotoStorage):
     """
     Enforced encryption for private storage on S3.

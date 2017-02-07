@@ -40,7 +40,7 @@ setup(
 
     install_requires=[],
     requires=[
-        'Django (>=1.6)',
+        'Django (>=1.7)',
     ],
 
     description='Private media file storage for Django projects',
