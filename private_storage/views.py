@@ -2,13 +2,13 @@
 Views to send private files.
 """
 from django.http import HttpResponseForbidden, Http404
+from django.utils.module_loading import import_string
 from django.views.generic import View
 
 from . import appconfig
 from .models import PrivateFile
 from .servers import get_server_class
 from .storage import private_storage
-from .utils import import_symbol
 
 
 class PrivateStorageView(View):
@@ -20,7 +20,7 @@ class PrivateStorageView(View):
     storage = private_storage
 
     #: The authorisation rule for accessing
-    can_access_file = staticmethod(import_symbol(appconfig.PRIVATE_STORAGE_AUTH_FUNCTION))
+    can_access_file = staticmethod(import_string(appconfig.PRIVATE_STORAGE_AUTH_FUNCTION))
 
     #: Import the server class once
     server_class = get_server_class(appconfig.PRIVATE_STORAGE_SERVER)

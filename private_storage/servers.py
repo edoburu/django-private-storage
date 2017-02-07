@@ -7,15 +7,14 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponse
 from django.utils.lru_cache import lru_cache
+from django.utils.module_loading import import_string
 from django.views.static import serve
-
-from .utils import import_symbol
 
 
 @lru_cache()
 def get_server_class(path):
     if '.' in path:
-        return import_symbol(path)
+        return import_string(path)
     elif path == 'django':
         return DjangoServer
     elif path == 'apache':
