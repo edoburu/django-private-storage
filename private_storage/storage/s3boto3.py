@@ -1,6 +1,8 @@
+from django.urls import reverse
 from django.utils.deconstruct import deconstructible
 from storages.backends.s3boto3 import S3Boto3Storage
 from storages.utils import setting
+from private_storage import appconfig
 
 
 @deconstructible
@@ -34,6 +36,14 @@ class PrivateS3BotoStorage(S3Boto3Storage):
     endpoint_url = setting('AWS_PRIVATE_S3_ENDPOINT_URL', None)
     region_name = setting('AWS_PRIVATE_S3_REGION_NAME', S3Boto3Storage.region_name)  # fallback to default
     use_ssl = setting('AWS_PRIVATE_S3_USE_SSL', True)
+
+    def url(self, name, *args, **kwargs):
+        if appconfig.PRIVATE_STORAGE_S3_REVERSE_PROXY or not self.querystring_auth:
+            # There is no direct URL possible, return our streaming view instead.
+            return reverse('serve_private_file', kwargs={'path': name})
+        else:
+            # The S3Boto3Storage can generate a presigned URL that is temporary available.
+            return super(PrivateS3BotoStorage, self).url(name, *args, **kwargs)
 
 
 @deconstructible

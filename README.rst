@@ -89,6 +89,9 @@ The following settings are reused when they don't have an corresponding ``AWS_PR
 
 All other settings should be explicitly defined with ``AWS_PRIVATE_...`` settings.
 
+By default, all URLs in the admin return the direct S3 bucket URls, with the `query parameter authentication`_ enabled.
+When ``AWS_PRIVATE_QUERYSTRING_AUTH = False``, all file downloads are proxied through our ``PrivateFileView`` URL.
+
 To have encryption either configure ``AWS_PRIVATE_S3_ENCRYPTION``
 and ``AWS_PRIVATE_S3_SIGNATURE_VERSION`` or use:
 
@@ -218,3 +221,4 @@ or think it's not flexible enough, please let us know. We'd love to improve it!
 
 
 .. _django-storages: https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
+.. _query parameter authentication: https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-query-string-auth.html

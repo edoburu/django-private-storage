@@ -7,3 +7,5 @@ PRIVATE_STORAGE_AUTH_FUNCTION = getattr(settings, 'PRIVATE_STORAGE_AUTH_FUNCTION
 
 # For Nginx X-Accel-Redirect
 PRIVATE_STORAGE_INTERNAL_URL = getattr(settings, 'PRIVATE_STORAGE_INTERNAL_URL', '/private-x-accel-redirect/')
+
+PRIVATE_STORAGE_S3_REVERSE_PROXY = getattr(settings, 'PRIVATE_STORAGE_S3_REVERSE_PROXY', False)
