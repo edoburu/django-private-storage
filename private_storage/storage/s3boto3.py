@@ -10,6 +10,10 @@ class PrivateS3BotoStorage(S3Boto3Storage):
     """
     Private storage bucket for S3
     """
+
+    access_key_names = ['AWS_PRIVATE_S3_ACCESS_KEY_ID', 'AWS_PRIVATE_ACCESS_KEY_ID'] + S3Boto3Storage.access_key_names
+    secret_key_names = ['AWS_PRIVATE_S3_SECRET_ACCESS_KEY', 'AWS_PRIVATE_SECRET_ACCESS_KEY'] + S3Boto3Storage.secret_key_names
+
     # Since this class inherits the default storage, it shares many parameters with the base class.
     # Thus, redefine the setting name that is used to read these values, so almost all settings are not shared.
     access_key = setting('AWS_PRIVATE_S3_ACCESS_KEY_ID', setting('AWS_PRIVATE_ACCESS_KEY_ID', S3Boto3Storage.access_key))
