@@ -33,7 +33,9 @@ def get_server_class(path):
 
 class DjangoStreamingServer(object):
     """
-    Serve static files as streaming chunks in Django.
+    Serve static files through ``wsgi.file_wrapper`` or streaming chunks.
+
+    This method also works for content that doesn't exist at the local filesystem, such as files on S3.
     """
 
     @staticmethod
@@ -44,7 +46,9 @@ class DjangoStreamingServer(object):
         if not was_modified_since(private_file.request.META.get('HTTP_IF_MODIFIED_SINCE'), mtime, size):
             return HttpResponseNotModified()
 
-        # FileResponse will submit the file in 8KB chunks
+        # As of Django 1.8, FileResponse triggers 'wsgi.file_wrapper' in Django's WSGIHandler.
+        # This uses efficient file streaming, such as sendfile() in uWSGI.
+        # When the WSGI container doesn't provide 'wsgi.file_wrapper', it submits the file in 4KB chunks.
         response = FileResponse(private_file.open())
         response['Content-Type'] = private_file.content_type
         response['Content-Length'] = size
@@ -54,15 +58,24 @@ class DjangoStreamingServer(object):
 
 class DjangoServer(DjangoStreamingServer):
     """
-    Serve static files from the local filesystem through Django.
-    This is a bad idea for most situations other than testing.
-    The file data is copied multiple times; read by Django, written to WSGI,
-    read by webserver, outputted to client.
+    Serve static files from the local filesystem through Django or ``wsgi_file_wrapper``.
+
+    Django 1.8 and up support ``wsgi.file_wrapper``, which helps to send a file in the
+    most efficient way. When the WSGI server provides this feature,
+    the file is send using an efficient method such as ``sendfile()`` on UNIX.
+
+    Without ``file.file_wrapper``, the file will be streamed in 4K chunks,
+    causing the file data to be read and copied multiple times in kernel memory
+    as the file is read by Django, written to WSGI, read by webserver, and written to the socket.
+
+    In some situations, such as Gunicorn behind Nginx/Apache,
+    it's recommended to use the :class:`ApacheXSendfileServer`
+    or :class:`NginxXAccelRedirectServer` servers instead.
     """
 
     @staticmethod
     def serve(private_file):
-        # This supports If-Modified-Since and sends the file in 8KB chunks
+        # This supports If-Modified-Since and sends the file in 4KB chunks
         try:
             full_path = private_file.full_path
         except NotImplementedError:

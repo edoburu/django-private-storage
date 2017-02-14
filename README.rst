@@ -128,14 +128,21 @@ which has the following fields:
 Optimizing large file transfers
 -------------------------------
 
-By default, the files are served by the Django instance.
-This can be inefficient, since the whole file needs to be read in chunks
-and passed through the WSGI buffers, OS kernel and webserver.
+Sending large files can be inefficient in some configurations.
+
+In the worst case scenario, the whole file needs to be read in chunks
+and passed as a whole through the WSGI buffers, OS kernel, webserver and proxy server.
 In effect, the complete file is copied several times through memory buffers.
 
-Hence, webservers offer a method to send the file on behalf of the backend application.
-This happens with the ``sendfile()`` system call,
-which can be enabled with the following settings:
+There are more efficient ways to transfer files, such as the ``sendfile()`` system call on UNIX.
+Django uses such feature when the WSGI server provides ``wsgi.file_handler`` support.
+
+In some situations, this effect is nullified,
+for example by by a local HTTP server sitting in front of the WSGI container.
+A typical case would be  running Gunicorn behind an Nginx or Apache webserver.
+
+For such situation, the native support of the
+webserver can be enabled with the following settings:
 
 For apache
 ~~~~~~~~~~
