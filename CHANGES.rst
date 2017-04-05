@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Version 1.2 (2017-04-05)
+------------------------
+
+* Added ``Content-Disposition`` header support, including a proper RFC-encoded filename.
+  Add the ``content_disposition`` field to the views to enable this.
+  The ``content_disposition_filename`` and ``get_content_disposition_filename()`` can be overwritten too.
+
+
 Version 1.1.2 (2017-04-05)
 --------------------------
 
