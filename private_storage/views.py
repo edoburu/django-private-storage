@@ -1,6 +1,13 @@
 """
 Views to send private files.
 """
+import os
+
+try:
+    from urllib.parse import quote
+except ImportError:
+    from urllib import quote  # Python 2
+
 from django.http import HttpResponseForbidden, Http404
 from django.utils.module_loading import import_string
 from django.views.generic import View
@@ -25,6 +32,12 @@ class PrivateStorageView(View):
 
     #: Import the server class once
     server_class = get_server_class(appconfig.PRIVATE_STORAGE_SERVER)
+
+    #: Whether the file should be displayed ``inline`` or show a download box (``attachment``).
+    content_disposition = None
+
+    #: The filename to use when :attr:`content_disposition` is set.
+    content_disposition_filename = None
 
     def get_path(self):
         """
@@ -66,7 +79,39 @@ class PrivateStorageView(View):
         :type private_file: :class:`private_storage.models.PrivateFile`
         :rtype: django.http.HttpResponse
         """
-        return self.server_class().serve(private_file)
+        response = self.server_class().serve(private_file)
+
+        if self.content_disposition:
+            filename = self.get_content_disposition_filename(private_file)
+            response['Content-Disposition'] = '{}; {}'.format(
+                self.content_disposition, self._encode_filename_header(filename)
+            )
+
+        return response
+
+    def get_content_disposition_filename(self, private_file):
+        """
+        Return the filename in the download header.
+        """
+        return self.content_disposition_filename or os.path.basename(private_file.relative_name)
+
+    def _encode_filename_header(self, filename):
+        """
+        The filename, encoded to use in a ``Content-Disposition`` header.
+        """
+        # Based on https://www.djangosnippets.org/snippets/1710/
+        if 'WebKit' in self.request.META['HTTP_USER_AGENT']:
+            # Support available for UTF-8 encoded strings.
+            utf8_filename = filename.encode("utf-8")
+            return 'filename={}'.format(utf8_filename)
+        elif 'MSIE' in self.request.META['HTTP_USER_AGENT']:
+            # IE does not support internationalized filename at all.
+            # It can only recognize internationalized URL, so we should perform a trick via URL names.
+            return ''
+        else:
+            # For others like Firefox, we follow RFC2231 (encoding extension in HTTP headers).
+            rfc2231_filename = quote(filename.encode("utf-8"))
+            return "filename*=UTF-8''{}".format(rfc2231_filename)
 
 
 class PrivateStorageDetailView(SingleObjectMixin, PrivateStorageView):
