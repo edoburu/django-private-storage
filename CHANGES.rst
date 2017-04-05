@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Version 1.1.2 (2017-04-05)
+--------------------------
+
+* Allow AWS_PRIVATE.. credentials to be defined through environment variables too.
+* Fixed ``model_file_field`` usage in ``PrivateStorageDetailView``.
+
+
 Version 1.1.1 (2017-02-17)
 --------------------------
 
