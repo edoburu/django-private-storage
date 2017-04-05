@@ -76,7 +76,11 @@ class PrivateStorageDetailView(SingleObjectMixin, PrivateStorageView):
 
     Implement access controls by overriding :meth`get_queryset` or redefining :meth:`can_access_file`.
     """
-    model = None  #
+
+    #: Define the model to fetch.
+    model = None
+
+    #: Define which field the file name is stored at.
     model_file_field = 'file'
 
     def get(self, request, *args, **kwargs):
@@ -84,7 +88,7 @@ class PrivateStorageDetailView(SingleObjectMixin, PrivateStorageView):
         return super().get(request, *args, **kwargs)
 
     def get_path(self):
-        file = getattr(self.object, 'file')
+        file = getattr(self.object, self.model_file_field)
         return file.name
 
     def can_access_file(self, private_file):
