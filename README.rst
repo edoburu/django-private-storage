@@ -1,3 +1,12 @@
+.. image:: https://img.shields.io/travis/edoburu/django-private-storage/master.svg?branch=master
+    :target: http://travis-ci.org/edoburu/django-private-storage
+.. image:: https://img.shields.io/pypi/v/django-private-storage.svg
+    :target: https://pypi.python.org/pypi/django-private-storage/
+.. image:: https://img.shields.io/pypi/l/django-private-storage.svg
+    :target: https://pypi.python.org/pypi/django-private-storage/
+.. image:: https://img.shields.io/codecov/c/github/edoburu/django-private-storage/master.svg
+    :target: https://codecov.io/github/edoburu/django-private-storage?branch=master
+
 django-private-storage
 ======================
 
