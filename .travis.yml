@@ -1,0 +1,31 @@
+sudo: false
+language: python
+python:
+- '2.7'
+- '3.6'
+env:
+- DJANGO="django>=1.8.0,<1.9.0"
+- DJANGO="django>=1.9.0,<1.10.0"
+- DJANGO="django>=1.10.0,<1.11.0"
+- DJANGO="django>=1.11.0,<1.12.0"
+before_install:
+- pip install codecov
+install:
+- travis_retry pip install $DJANGO django-storages boto3 -e .
+script:
+- coverage run --rcfile=.coveragerc runtests.py
+after_success:
+- codecov
+branches:
+  only:
+  - master
+notifications:
+  email:
+    recipients:
+    - travis@edoburu.nl
+    on_success: never
+    on_failure: always
+  slack:
+    secure: WWNa4MHf50AOybB+XW9UKXCk/9Q8r++Jc4xTdEib43rj4odH9wxIaTRrzAbbpo3EO2gYuLgq6mMbaIZPD5l2UmgSnyuIbeYAAKIQblT+8XMamtXwnSS5j9vfBXYdj54rTlh+jKwEMW/JiQKl+SQpfQ2v1NMvYO63m89Ev9vXvcU=
+    on_success: never
+    on_failure: always
