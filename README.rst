@@ -227,7 +227,7 @@ And expose that URL:
 .. code-block:: python
 
     urlpatterns += [
-        url(^private-documents2/(?P<path>.*)$', views.MyStorageView.as_view()),
+        url('^private-documents2/(?P<path>.*)$', views.MyStorageView.as_view()),
     ]
 
 Contributing
