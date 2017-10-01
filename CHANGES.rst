@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Version 1.2.2 (2017-10-01)
+--------------------------
+
+* Fixed default ``PRIVATE_STORAGE_AUTH_FUNCTION`` path.
+* Added ``PrivateFile.parent_object`` field when ``PrivateStorageDetailView`` is used.
+
+
 Version 1.2.1 (2017-05-08)
 --------------------------
 
