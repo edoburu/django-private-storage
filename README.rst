@@ -35,7 +35,7 @@ Add to the settings:
     )
 
     PRIVATE_STORAGE_ROOT = '/path/to/private-media/'
-    PRIVATE_STORAGE_AUTH_FUNCTION = 'apps.utils.private_storage.permissions.allow_staff'
+    PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
 
 Add to ``urls.py``:
 
