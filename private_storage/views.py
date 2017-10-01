@@ -136,6 +136,15 @@ class PrivateStorageDetailView(SingleObjectMixin, PrivateStorageView):
         file = getattr(self.object, self.model_file_field)
         return file.name
 
+    def get_private_file(self):
+        # Provide the parent object as well.
+        return PrivateFile(
+            request=self.request,
+            storage=self.storage,
+            relative_name=self.get_path(),
+            parent_object=self.object
+        )
+
     def can_access_file(self, private_file):
         """
         The authorization rule for this view.

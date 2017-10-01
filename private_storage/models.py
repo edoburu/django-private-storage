@@ -10,10 +10,11 @@ class PrivateFile(object):
     A wrapper object that describes the file that is being accessed.
     """
 
-    def __init__(self, request, storage, relative_name):
+    def __init__(self, request, storage, relative_name, parent_object=None):
         self.request = request
         self.storage = storage  # type: Storage
         self.relative_name = relative_name
+        self.parent_object = parent_object
 
     @cached_property
     def full_path(self):

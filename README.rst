@@ -133,6 +133,32 @@ which has the following fields:
 * ``full_path``: the full file system path.
 * ``exists()``: whether the file exists.
 * ``content_type``: the HTTP content type.
+* ``parent_object``: only set when ``PrivateStorageDetailView`` was used.
+
+
+Retrieving files by object ID
+-----------------------------
+
+To implement more object-based access permissions,
+create a custom view that provides the download.
+
+.. code-block:: python
+
+    from private_storage.views import PrivateStorageDetailView
+
+    class MyDocumentDownloadView(PrivateStorageDetailView):
+        model = MyModel
+        model_file_field = 'file'
+
+        def get_queryset(self):
+            # Make sure only certain objects can be accessed.
+            return super().get_queryset().filter(...)
+
+        def can_access_file(self, private_file):
+            # When the object can be accessed, the file may be downloaded.
+            # This overrides PRIVATE_STORAGE_AUTH_FUNCTION
+            return True
+
 
 Optimizing large file transfers
 -------------------------------
@@ -229,6 +255,7 @@ And expose that URL:
     urlpatterns += [
         url('^private-documents2/(?P<path>.*)$', views.MyStorageView.as_view()),
     ]
+
 
 Contributing
 ------------
