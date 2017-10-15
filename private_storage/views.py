@@ -130,7 +130,7 @@ class PrivateStorageDetailView(SingleObjectMixin, PrivateStorageView):
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        return super().get(request, *args, **kwargs)
+        return super(PrivateStorageDetailView, self).get(request, *args, **kwargs)
 
     def get_path(self):
         file = getattr(self.object, self.model_file_field)
