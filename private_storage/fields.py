@@ -9,7 +9,6 @@ from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import UploadedFile
 from django.db import models
 from django.template.defaultfilters import filesizeformat
-from django.utils.encoding import smart_str
 from django.utils.translation import ugettext_lazy as _
 from .storage import private_storage
 
@@ -71,4 +70,4 @@ class PrivateFileField(models.FileField):
         if not subdirs:
             subdirs = [self.get_directory_name()]
         dirs = list(subdirs) + [self.get_filename(filename)]
-        return smart_str(os.path.join(*dirs))
+        return os.path.normpath(os.path.join(*dirs))
