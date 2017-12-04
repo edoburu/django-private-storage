@@ -1,6 +1,14 @@
 Changelog
 =========
 
+Version 1.2.3 (2017-12-04)
+--------------------------
+
+* Fixed ``reverse()`` import for Django 2.0.
+* Fixed ``UnicodeDecodeError`` with cyrillic file names.
+* Fixed Python 2 ``super()`` call.
+
+
 Version 1.2.2 (2017-10-01)
 --------------------------
 
