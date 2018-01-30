@@ -2,6 +2,7 @@
 Sending files efficiently for different kind of webservers.
 """
 import os
+import time
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
@@ -41,7 +42,10 @@ class DjangoStreamingServer(object):
     @staticmethod
     def serve(private_file):
         # Support If-Last-Modified
-        mtime = private_file.modified_time.timestamp()
+        if sys.version_info >= (3,):
+            mtime = private_file.modified_time.timestamp()
+        else:
+            mtime = time.mktime(private_file.modified_time.timetuple())
         size = private_file.size
         if not was_modified_since(private_file.request.META.get('HTTP_IF_MODIFIED_SINCE'), mtime, size):
             return HttpResponseNotModified()
