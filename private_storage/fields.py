@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 import logging
 import os
 
-import django
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import UploadedFile
 from django.db import models
@@ -36,8 +35,6 @@ class PrivateFileField(models.FileField):
         self.max_file_size = kwargs.pop("max_file_size", None)
 
         kwargs.setdefault('storage', private_storage)
-        if self._upload and django.VERSION < (1,7):
-            kwargs.setdefault('upload_to', 'uploads')  # shut up warnings from Django 1.6- model validation
         super(PrivateFileField, self).__init__(*args, **kwargs)
 
     def clean(self, *args, **kwargs):
