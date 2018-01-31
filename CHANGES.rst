@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Version 1.2.4 (2018-01-31)
+--------------------------
+
+* Fixed Python 2 support in ``DjangoStreamingServer.serve()``.
+
+
 Version 1.2.3 (2017-12-04)
 --------------------------
 
