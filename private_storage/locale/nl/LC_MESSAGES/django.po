@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-10-10 12:15+0200\n"
+"POT-Creation-Date: 2018-01-31 16:14+0100\n"
 "PO-Revision-Date: 2016-10-06 16:59+0100\n"
 "Last-Translator: Diederik van der Boor <vdboor@edoburu.nl>\n"
 "Language-Team: \n"
@@ -18,11 +18,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.7.4\n"
 
-#: fields.py:30
+#: fields.py:28
 msgid "File type not supported."
 msgstr "Bestandstype is niet ondersteund."
 
-#: fields.py:31
+#: fields.py:29
 #, python-brace-format
 msgid "The file may not be larger then {max_size}."
 msgstr "Het bestand mag niet groter zijn dan {max_size}."
