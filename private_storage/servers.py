@@ -2,6 +2,7 @@
 Sending files efficiently for different kind of webservers.
 """
 import os
+import sys
 import time
 
 from django.conf import settings
