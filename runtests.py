@@ -16,6 +16,8 @@ if not settings.configured:
             }
         },
         INSTALLED_APPS=(
+            'django.contrib.auth',
+            'django.contrib.contenttypes',
             'private_storage',
         ),
         TEST_RUNNER='django.test.runner.DiscoverRunner',

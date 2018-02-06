@@ -19,8 +19,6 @@ except ImportError:
     from urllib import quote  # Python 2
 
 
-
-
 class PrivateStorageView(View):
     """
     Return the uploaded files
@@ -102,11 +100,12 @@ class PrivateStorageView(View):
         The filename, encoded to use in a ``Content-Disposition`` header.
         """
         # Based on https://www.djangosnippets.org/snippets/1710/
-        if 'WebKit' in self.request.META['HTTP_USER_AGENT']:
+        user_agent = self.request.META.get('HTTP_USER_AGENT', None)
+        if 'WebKit' in user_agent:
             # Support available for UTF-8 encoded strings.
             utf8_filename = filename.encode("utf-8")
             return 'filename={}'.format(utf8_filename)
-        elif 'MSIE' in self.request.META['HTTP_USER_AGENT']:
+        elif 'MSIE' in user_agent:
             # IE does not support internationalized filename at all.
             # It can only recognize internationalized URL, so we should perform a trick via URL names.
             return ''
