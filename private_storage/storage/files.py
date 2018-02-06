@@ -13,7 +13,6 @@ except ImportError:
     from django.core.urlresolvers import reverse_lazy
 
 
-
 @deconstructible
 class PrivateFileSystemStorage(FileSystemStorage):
     """
