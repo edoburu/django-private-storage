@@ -73,13 +73,13 @@ class PrivateFileField(models.FileField):
         return os.path.normpath(os.path.join(*dirs))
 
     def get_directory_name(self):
-        '''
+        """
         Added for compatibility with Django 2.0 where this method was removed
-        '''
+        """
         return os.path.normpath(force_text(datetime.datetime.now().strftime(force_str(self.upload_to))))
 
     def get_filename(self, filename):
-        '''
+        """
         Added for compatibility with Django 2.0 where this method was removed
-        '''
+        """
         return os.path.normpath(self.storage.get_valid_name(os.path.basename(filename)))
