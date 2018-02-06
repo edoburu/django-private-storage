@@ -10,18 +10,18 @@ if not settings.configured:
     sys.path.insert(0, path.join(module_root, 'example'))
 
     settings.configure(
-        DEBUG = False,  # will be False anyway by DjangoTestRunner.
-        DATABASES = {
+        DEBUG=False,  # will be False anyway by DjangoTestRunner.
+        DATABASES={
             'default': {
                 'ENGINE': 'django.db.backends.sqlite3',
                 'NAME': ':memory:'
             }
         },
-        INSTALLED_APPS = (
+        INSTALLED_APPS=(
             'private_storage',
         ),
-        TEST_RUNNER = 'django.test.runner.DiscoverRunner',
-        TEMPLATES = [
+        TEST_RUNNER='django.test.runner.DiscoverRunner',
+        TEMPLATES=[
             {
                 'BACKEND': 'django.template.backends.django.DjangoTemplates',
                 'DIRS': (),
@@ -48,6 +48,7 @@ if not settings.configured:
 def runtests():
     argv = sys.argv[:1] + ['test', 'private_storage'] + sys.argv[1:]
     execute_from_command_line(argv)
+
 
 if __name__ == '__main__':
     runtests()

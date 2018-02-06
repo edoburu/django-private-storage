@@ -19,6 +19,7 @@ class PrivateFileSystemStorage(FileSystemStorage):
     Interface to the Django storage system,
     storing the files in a private folder.
     """
+
     def __init__(self, location=None, base_url=None, **kwargs):
         if location is None:
             location = appconfig.PRIVATE_STORAGE_ROOT

@@ -19,7 +19,6 @@ from django.utils.encoding import force_str, force_text
 logger = logging.getLogger(__name__)
 
 
-
 class PrivateFileField(models.FileField):
     """
     Filefield with private storage, custom filename and size checks.
