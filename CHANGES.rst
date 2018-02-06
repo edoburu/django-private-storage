@@ -1,8 +1,8 @@
 Changelog
 =========
 
-Changes in git
---------------
+Changes in 2.0 (2018-02-06)
+---------------------------
 
 * Added Django 2.0 support.
 * Support ``upload_to`` parameter and callable.
