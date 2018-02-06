@@ -85,9 +85,6 @@ class PrivateFileField(models.FileField):
                 # Support list, so joining can be done in a storage-specific manner.
                 path_parts.extend([self.storage.get_valid_name(dir) for dir in extra_dirs])
 
-        if not path_parts:
-            path_parts = [self.get_directory_name()]
-
         path_parts.append(self._get_clean_filename(filename))
         if django.VERSION >= (1, 10):
             filename = posixpath.join(*path_parts)
