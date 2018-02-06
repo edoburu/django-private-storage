@@ -7,8 +7,7 @@ import time
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from django.http import FileResponse, HttpResponse
-from django.http import HttpResponseNotModified
+from django.http import FileResponse, HttpResponse, HttpResponseNotModified
 from django.utils.http import http_date
 from django.utils.lru_cache import lru_cache
 from django.utils.module_loading import import_string

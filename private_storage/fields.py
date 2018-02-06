@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import datetime
 import logging
 import os
 import posixpath
@@ -9,12 +10,11 @@ from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import UploadedFile
 from django.db import models
 from django.template.defaultfilters import filesizeformat
-from django.utils.translation import ugettext_lazy as _
-from django.utils.six import string_types
-from .storage import private_storage
-
-import datetime
 from django.utils.encoding import force_str, force_text
+from django.utils.six import string_types
+from django.utils.translation import ugettext_lazy as _
+
+from .storage import private_storage
 
 logger = logging.getLogger(__name__)
 

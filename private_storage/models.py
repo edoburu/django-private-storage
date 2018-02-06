@@ -1,7 +1,6 @@
 import mimetypes
 
-from django.core.files.storage import Storage, File
-
+from django.core.files.storage import File, Storage
 from django.utils.functional import cached_property
 
 

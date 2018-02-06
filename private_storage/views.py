@@ -3,12 +3,7 @@ Views to send private files.
 """
 import os
 
-try:
-    from urllib.parse import quote
-except ImportError:
-    from urllib import quote  # Python 2
-
-from django.http import HttpResponseForbidden, Http404
+from django.http import Http404, HttpResponseForbidden
 from django.utils.module_loading import import_string
 from django.views.generic import View
 from django.views.generic.detail import SingleObjectMixin
@@ -17,6 +12,13 @@ from . import appconfig
 from .models import PrivateFile
 from .servers import get_server_class
 from .storage import private_storage
+
+try:
+    from urllib.parse import quote
+except ImportError:
+    from urllib import quote  # Python 2
+
+
 
 
 class PrivateStorageView(View):
