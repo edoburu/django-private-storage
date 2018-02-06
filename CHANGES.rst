@@ -1,6 +1,15 @@
 Changelog
 =========
 
+Changes in git
+--------------
+
+* Added Django 2.0 support.
+* Support ``upload_to`` parameter and callable.
+* Support ``upload_subfolder`` to return a string instead of list.
+* Dropped Django 1.7 compatibility
+
+
 Version 1.2.4 (2018-01-31)
 --------------------------
 
