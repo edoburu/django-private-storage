@@ -3,12 +3,14 @@ from __future__ import unicode_literals
 
 import logging
 import os
+import posixpath
 
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import UploadedFile
 from django.db import models
 from django.template.defaultfilters import filesizeformat
 from django.utils.translation import ugettext_lazy as _
+from django.utils.six import string_types
 from .storage import private_storage
 
 import datetime
@@ -61,25 +63,36 @@ class PrivateFileField(models.FileField):
         return data
 
     def generate_filename(self, instance, filename):
+        path_parts = []
+
+        if self.upload_to:
+            # Support the upload_to callable that Django 1.9+ provides
+            if callable(self.upload_to):
+                dirname, filename = os.path.split(self.upload_to(instance, filename))
+                path_parts.append(dirname)
+            else:
+                dirname = force_text(datetime.datetime.now().strftime(force_str(self.upload_to)))
+                path_parts.append(dirname)
+
+        # Add our custom subdir function.
         subdir_func = self._upload
         if subdir_func:
-            subdirs = [self.storage.get_valid_name(dir) for dir in subdir_func(instance)]
-        else:
-            subdirs = [self.upload_to]
+            extra_dirs = subdir_func(instance)
+            if isinstance(extra_dirs, string_types):
+                # Avoid mistakes by developers, no "s/u/b/p/a/t/h/"
+                path_parts.append(self.storage.get_valid_name(extra_dirs))
+            else:
+                # Support list, so joining can be done in a storage-specific manner.
+                path_parts.extend([self.storage.get_valid_name(dir) for dir in extra_dirs])
 
-        if not subdirs:
-            subdirs = [self.get_directory_name()]
-        dirs = list(subdirs) + [self.get_filename(filename)]
-        return os.path.normpath(os.path.join(*dirs))
+        if not path_parts:
+            path_parts = [self.get_directory_name()]
 
-    def get_directory_name(self):
-        """
-        Added for compatibility with Django 2.0 where this method was removed
-        """
-        return os.path.normpath(force_text(datetime.datetime.now().strftime(force_str(self.upload_to))))
+        path_parts.append(self._get_clean_filename(filename))
+        filename = posixpath.join(*path_parts)
+        return self.storage.generate_filename(filename)
 
-    def get_filename(self, filename):
-        """
-        Added for compatibility with Django 2.0 where this method was removed
-        """
+    def _get_clean_filename(self, filename):
+        # As of Django 1.10+, file names are no longer cleaned locally, but cleaned by the storage.
+        # This compatibility function makes sure all Django versions generate a safe filename.
         return os.path.normpath(self.storage.get_valid_name(os.path.basename(filename)))
