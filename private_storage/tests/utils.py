@@ -21,4 +21,11 @@ class PrivateFileTestCase(TestCase):
         """
         path = os.path.join(settings.PRIVATE_STORAGE_ROOT, *parts)
         if not os.path.exists(path):
-            raise self.failureException("Path {} does not exist".format(path))
+            all_files = []
+            for root, dirs, files in os.walk(settings.PRIVATE_STORAGE_ROOT):
+                all_files.extend([os.path.join(root, file) for file in files])
+            all_files.sort()
+            raise self.failureException("Path {} does not exist, found:\n{}".format(
+                path,
+                "\n".join(all_files)
+            ))

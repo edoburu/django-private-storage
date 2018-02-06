@@ -5,6 +5,7 @@ import datetime
 import logging
 import os
 import posixpath
+import warnings
 
 import django
 from django.core.exceptions import ValidationError
@@ -77,13 +78,17 @@ class PrivateFileField(models.FileField):
         # Add our custom subdir function.
         upload_subfolder = self.upload_subfolder
         if upload_subfolder:
+            # Should return a list, so joining can be done in a storage-specific manner.
             extra_dirs = upload_subfolder(instance)
+
+            # Avoid mistakes by developers, no "s/u/b/p/a/t/h/"
             if isinstance(extra_dirs, string_types):
-                # Avoid mistakes by developers, no "s/u/b/p/a/t/h/"
-                path_parts.append(self.storage.get_valid_name(extra_dirs))
-            else:
-                # Support list, so joining can be done in a storage-specific manner.
-                path_parts.extend([self.storage.get_valid_name(dir) for dir in extra_dirs])
+                warnings.warn("{}.{}.upload_subfolder should return a list"
+                              " to avoid path-separator issues.".format(
+                    instance.__class__.__name__, self.name), UserWarning)
+                extra_dirs = os.path.split(extra_dirs)
+
+            path_parts.extend([self.storage.get_valid_name(dir) for dir in extra_dirs])
 
         path_parts.append(self._get_clean_filename(filename))
         if django.VERSION >= (1, 10):

@@ -47,7 +47,7 @@ class ViewTests(PrivateFileTestCase):
             customer='cust2',
             file=SimpleUploadedFile('test5.txt', b'test5')
         )
-        self.assertExists('dossier3', 'cust2', 'test5.txt')
+        self.assertExists('CustomerDossier', 'cust2', 'test5.txt')
 
         request = RequestFactory().get('/cust1/file/')
         request.user = User.objects.create_superuser('admin', 'admin@example.com', 'admin')
@@ -61,7 +61,7 @@ class ViewTests(PrivateFileTestCase):
 
         response = view(
             request,
-            path='dossier3/cust2/test5.txt'
+            path='CustomerDossier/cust2/test5.txt'
         )
         self.assertEqual(list(response.streaming_content), [b'test5'])
         self.assertEqual(response['Content-Type'], 'text/plain')
