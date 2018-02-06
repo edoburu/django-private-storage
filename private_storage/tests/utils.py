@@ -12,7 +12,8 @@ class PrivateFileTestCase(TestCase):
         Empty the test folder after each test case.
         """
         super(PrivateFileTestCase, self).tearDown()
-        shutil.rmtree(settings.PRIVATE_STORAGE_ROOT)
+        if os.path.exists(settings.PRIVATE_STORAGE_ROOT):
+            shutil.rmtree(settings.PRIVATE_STORAGE_ROOT)
 
     def assertExists(self, *parts):
         """

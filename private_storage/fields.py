@@ -6,6 +6,7 @@ import logging
 import os
 import posixpath
 
+import django
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import UploadedFile
 from django.db import models
@@ -65,7 +66,7 @@ class PrivateFileField(models.FileField):
         path_parts = []
 
         if self.upload_to:
-            # Support the upload_to callable that Django 1.9+ provides
+            # Support the upload_to callable that Django provides
             if callable(self.upload_to):
                 dirname, filename = os.path.split(self.upload_to(instance, filename))
                 path_parts.append(dirname)
@@ -88,8 +89,11 @@ class PrivateFileField(models.FileField):
             path_parts = [self.get_directory_name()]
 
         path_parts.append(self._get_clean_filename(filename))
-        filename = posixpath.join(*path_parts)
-        return self.storage.generate_filename(filename)
+        if django.VERSION >= (1, 10):
+            filename = posixpath.join(*path_parts)
+            return self.storage.generate_filename(filename)
+        else:
+            return os.path.join(*path_parts)
 
     def _get_clean_filename(self, filename):
         # As of Django 1.10+, file names are no longer cleaned locally, but cleaned by the storage.
