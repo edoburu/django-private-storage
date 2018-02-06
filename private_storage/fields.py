@@ -34,7 +34,7 @@ class PrivateFileField(models.FileField):
     }
 
     def __init__(self, *args, **kwargs):
-        self._upload = kwargs.pop('upload_subfolder', None)
+        self.upload_subfolder = kwargs.pop('upload_subfolder', None)
         self.content_types = kwargs.pop("content_types", None) or ()
         self.max_file_size = kwargs.pop("max_file_size", None)
 
@@ -74,9 +74,9 @@ class PrivateFileField(models.FileField):
                 path_parts.append(dirname)
 
         # Add our custom subdir function.
-        subdir_func = self._upload
-        if subdir_func:
-            extra_dirs = subdir_func(instance)
+        upload_subfolder = self.upload_subfolder
+        if upload_subfolder:
+            extra_dirs = upload_subfolder(instance)
             if isinstance(extra_dirs, string_types):
                 # Avoid mistakes by developers, no "s/u/b/p/a/t/h/"
                 path_parts.append(self.storage.get_valid_name(extra_dirs))

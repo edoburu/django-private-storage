@@ -7,8 +7,6 @@ from os import path
 if not settings.configured:
     module_root = path.dirname(path.realpath(__file__))
 
-    sys.path.insert(0, path.join(module_root, 'example'))
-
     settings.configure(
         DEBUG=False,  # will be False anyway by DjangoTestRunner.
         DATABASES={
@@ -42,6 +40,7 @@ if not settings.configured:
             },
         ],
         AWS_PRIVATE_STORAGE_BUCKET_NAME='foobar',
+        PRIVATE_STORAGE_ROOT=path.join(module_root, 'test-media-root'),
     )
 
 

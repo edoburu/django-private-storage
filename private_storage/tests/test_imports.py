@@ -1,5 +1,4 @@
-# Most pathetic test case ever, only see if all files are importable.
-# TODO: write real tests.
+# Most pathetic test case ever, see if all files are importable.
 import private_storage
 import private_storage.appconfig
 import private_storage.fields
