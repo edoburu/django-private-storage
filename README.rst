@@ -66,7 +66,7 @@ The ``PrivateFileField`` also accepts the following kwargs:
 * ``upload_to``: the optional subfolder in the ``PRIVATE_STORAGE_ROOT``.
 * ``upload_subfolder``: a function that defines the folder, it receives the current model ``instance``.
 * ``content_types``: allowed content types
-* ``max_file_size``: maximum file size.
+* ``max_file_size``: maximum file size in bytes. (1MB is 1024 * 1024)
 * ``storage``: the storage object to use, defaults to ``private_storage.storage.private_storage``
 
 Other topics
