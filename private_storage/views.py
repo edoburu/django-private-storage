@@ -67,9 +67,23 @@ class PrivateStorageView(View):
             return HttpResponseForbidden('Private storage access denied')
 
         if not private_file.exists():
-            raise Http404("File not found")
+            return self.serve_file_not_found(private_file)
+        else:
+            return self.serve_file(private_file)
 
-        return self.serve_file(private_file)
+    def serve_file_not_found(self, private_file):
+        """
+        Display a response message telling that the file is not found.
+        This can be overwritten to improve the customer experience.
+        For example
+        - redirect the user, and show a message.
+        - render the message in the expected media type (e.g. PNG).
+        - show a custom 404 page.
+
+        :type private_file: :class:`private_storage.models.PrivateFile`
+        :rtype: django.http.HttpResponse
+        """
+        raise Http404("File not found")
 
     def serve_file(self, private_file):
         """
