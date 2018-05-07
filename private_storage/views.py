@@ -96,10 +96,12 @@ class PrivateStorageView(View):
         response = self.server_class().serve(private_file)
 
         if self.content_disposition:
+            # Python 3 doesn't support b'..'.format(), and % formatting
+            # was added in 3.4: # https://bugs.python.org/issue3982
             filename = self.get_content_disposition_filename(private_file)
-            response['Content-Disposition'] = '{}; {}'.format(
-                self.content_disposition, self._encode_filename_header(filename)
-            )
+            response['Content-Disposition'] = b'; '.join([
+                self.content_disposition.encode(), self._encode_filename_header(filename)
+            ])
 
         return response
 
@@ -117,16 +119,15 @@ class PrivateStorageView(View):
         user_agent = self.request.META.get('HTTP_USER_AGENT', None)
         if 'WebKit' in user_agent:
             # Support available for UTF-8 encoded strings.
-            utf8_filename = filename.encode("utf-8")
-            return 'filename={}'.format(utf8_filename)
+            return u'filename={}'.format(filename).encode("utf-8")
         elif 'MSIE' in user_agent:
             # IE does not support internationalized filename at all.
             # It can only recognize internationalized URL, so we should perform a trick via URL names.
-            return ''
+            return b''
         else:
             # For others like Firefox, we follow RFC2231 (encoding extension in HTTP headers).
             rfc2231_filename = quote(filename.encode("utf-8"))
-            return "filename*=UTF-8''{}".format(rfc2231_filename)
+            return "filename*=UTF-8''{}".format(rfc2231_filename).encode("utf-8")
 
 
 class PrivateStorageDetailView(SingleObjectMixin, PrivateStorageView):
