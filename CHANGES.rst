@@ -1,6 +1,16 @@
 Changelog
 =========
 
+Changes in 2.1 (2018-05-08)
+---------------------------
+
+* Added ``serve_file_not_found()`` to allow custom 404 serving in ``PrivateStorageView`` and ``PrivateStorageDetailView``.
+* Added ``Cache-Control`` headers to avoid caching private files in edge proxies.
+* Fixed ``PrivateStorageDetailView`` to use using the custom storage class defined in the model's ``PrivateFileField``.
+* Fixed ``Content-Disposition`` filename encoding in Python 3.
+* Fixed ``Content-Disposition`` filename support for old Internet Explorer browsers.
+
+
 Changes in 2.0 (2018-02-06)
 ---------------------------
 

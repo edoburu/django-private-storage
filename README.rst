@@ -159,6 +159,15 @@ create a custom view that provides the download.
             # This overrides PRIVATE_STORAGE_AUTH_FUNCTION
             return True
 
+The following class-level attributes can be overwritten:
+
+* ``model``: The model to fetch (including every other attribute of ``SingleObjectMixin``).
+* ``model_file_field``: This should point to the field used to store the file.
+* ``storage`` / ``get_storage()``: The storage class to read the file from.
+* ``server_class``: The Python class used to generate the ``HttpResponse`` / ``FileResponse``.
+* ``content_disposition``: Can be "inline" (show inside the browser) or "attachment" (saved as download).
+* ``content_disposition_filename`` / ``get_content_disposition_filename()``: Overrides the filename for downloading.
+
 
 Optimizing large file transfers
 -------------------------------
