@@ -4,6 +4,7 @@ Sending files efficiently for different kind of webservers.
 import os
 import sys
 import time
+from functools import wraps
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
@@ -32,6 +33,21 @@ def get_server_class(path):
         )
 
 
+def add_no_cache_headers(func):
+    """
+    Makes sure the retrieved file is not cached on disk, or cached by proxy servers in between.
+    This would circumvent any checking whether the user may even access the file.
+    """
+
+    @wraps(func)
+    def _dec(*args, **kwargs):
+        response = func(*args, **kwargs)
+        response['Expires'] = 'Thu, 01 Jan 1970 00:00:00 GMT'  # HTTP 1.0 proxies
+        response['Cache-Control'] = 'max-age=0, no-cache, must-revalidate, proxy-revalidate'  # HTTP 1.1
+        return response
+    return _dec
+
+
 class DjangoStreamingServer(object):
     """
     Serve static files through ``wsgi.file_wrapper`` or streaming chunks.
@@ -40,6 +56,7 @@ class DjangoStreamingServer(object):
     """
 
     @staticmethod
+    @add_no_cache_headers
     def serve(private_file):
         # Support If-Last-Modified
         if sys.version_info >= (3,):
@@ -78,6 +95,7 @@ class DjangoServer(DjangoStreamingServer):
     """
 
     @staticmethod
+    @add_no_cache_headers
     def serve(private_file):
         # This supports If-Modified-Since and sends the file in 4KB chunks
         try:
@@ -96,6 +114,7 @@ class ApacheXSendfileServer(object):
     """
 
     @staticmethod
+    @add_no_cache_headers
     def serve(private_file):
         response = HttpResponse()
         response['X-Sendfile'] = private_file.full_path
@@ -117,6 +136,7 @@ class NginxXAccelRedirectServer(object):
     """
 
     @staticmethod
+    @add_no_cache_headers
     def serve(private_file):
         internal_url = os.path.join(settings.PRIVATE_STORAGE_INTERNAL_URL, private_file.relative_name)
         response = HttpResponse()
