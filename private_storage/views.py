@@ -46,6 +46,12 @@ class PrivateStorageView(View):
         """
         return self.kwargs['path']
 
+    def get_storage(self):
+        """
+        Tell which storage to retrieve the file from.
+        """
+        return self.storage
+
     def get_private_file(self):
         """
         Return all relevant data in a single object, so this is easy to extend
@@ -53,7 +59,7 @@ class PrivateStorageView(View):
         """
         return PrivateFile(
             request=self.request,
-            storage=self.storage,
+            storage=self.get_storage(),
             relative_name=self.get_path()
         )
 
@@ -152,11 +158,15 @@ class PrivateStorageDetailView(SingleObjectMixin, PrivateStorageView):
         file = getattr(self.object, self.model_file_field)
         return file.name
 
+    def get_storage(self):
+        field = self.object._meta.get_field(self.model_file_field)
+        return field.storage
+
     def get_private_file(self):
         # Provide the parent object as well.
         return PrivateFile(
             request=self.request,
-            storage=self.storage,
+            storage=self.get_storage(),
             relative_name=self.get_path(),
             parent_object=self.object
         )
