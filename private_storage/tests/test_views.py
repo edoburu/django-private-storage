@@ -90,7 +90,7 @@ class ViewTests(PrivateFileTestCase):
         for user_agent, expect_header in [
                 ('Firefox', "attachment; filename*=UTF-8''Heiz%C3%B6lr%C3%BCcksto%C3%9Fabd%C3%A4mpfung.txt"),
                 ('WebKit', 'attachment; filename=Heiz\xc3\xb6lr\xc3\xbccksto\xc3\x9fabd\xc3\xa4mpfung.txt'),
-                ('MSIE', 'attachment; '),
+                ('MSIE', 'attachment; filename=Heiz%C3%B6lr%C3%BCcksto%C3%9Fabd%C3%A4mpfung.txt'),
                 ]:
 
             request = RequestFactory().get('/cust1/file/')

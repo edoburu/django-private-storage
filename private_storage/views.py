@@ -102,8 +102,8 @@ class PrivateStorageView(View):
         response = self.server_class().serve(private_file)
 
         if self.content_disposition:
-            # Python 3 doesn't support b'..'.format(), and % formatting
-            # was added in 3.4: # https://bugs.python.org/issue3982
+            # Join syntax works in all Python versions. Python 3 doesn't support b'..'.format(),
+            # and % formatting was added for bytes in 3.5: https://bugs.python.org/issue3982
             filename = self.get_content_disposition_filename(private_file)
             response['Content-Disposition'] = b'; '.join([
                 self.content_disposition.encode(), self._encode_filename_header(filename)
@@ -125,11 +125,14 @@ class PrivateStorageView(View):
         user_agent = self.request.META.get('HTTP_USER_AGENT', None)
         if 'WebKit' in user_agent:
             # Support available for UTF-8 encoded strings.
+            # This also matches Edgee.
             return u'filename={}'.format(filename).encode("utf-8")
         elif 'MSIE' in user_agent:
-            # IE does not support internationalized filename at all.
-            # It can only recognize internationalized URL, so we should perform a trick via URL names.
-            return b''
+            # IE does not support RFC2231 for internationalized headers, but somehow
+            # percent-decodes it so this can be used instead. Note that using the word
+            # "attachment" anywhere in the filename overrides an inline content-disposition.
+            url_encoded = quote(filename.encode("utf-8")).replace('attachment', "a%74tachment")
+            return "filename={}".format(url_encoded).encode("utf-8")
         else:
             # For others like Firefox, we follow RFC2231 (encoding extension in HTTP headers).
             rfc2231_filename = quote(filename.encode("utf-8"))
