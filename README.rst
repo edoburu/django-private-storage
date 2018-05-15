@@ -202,6 +202,7 @@ For Nginx
 
     PRIVATE_STORAGE_SERVER = 'nginx'
     PRIVATE_STORAGE_INTERNAL_URL = '/private-x-accel-redirect/'
+    PRIVATE_STORAGE_NGINX_VERSION = 'your.nginx.version'
 
 Add the following location block in the server config:
 
@@ -211,6 +212,10 @@ Add the following location block in the server config:
       internal;
       alias   /path/to/private-media/;
     }
+
+The ``PRIVATE_STORAGE_NGINX_VERSION`` setting is used to determine the proper encoding of the ``X-Accel-Redirect``
+header when dealing with non-ascii file names. Specifically, versions starting with ``1.5.9`` expect the value of the
+header to be URL encoded, while older versions require the raw/MIME encoded file path.
 
 Other webservers
 ~~~~~~~~~~~~~~~~
