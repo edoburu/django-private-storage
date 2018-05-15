@@ -217,6 +217,9 @@ The ``PRIVATE_STORAGE_NGINX_VERSION`` setting is used to determine the proper en
 header when dealing with non-ascii file names. Specifically, versions starting with ``1.5.9`` expect the value of the
 header to be URL encoded, while older versions require the raw/MIME encoded file path.
 
+The default behaviour is to quote the header (nginx >= 1.5.9), so you have to assign this setting if your nginx
+version is lower than that.
+
 Other webservers
 ~~~~~~~~~~~~~~~~
 

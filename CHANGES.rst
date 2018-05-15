@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Changes in x.y (Date TBD)
+---------------------------
+
+* Fixed ``X-Accel-Redirect`` non-ascii filename URI encoding compatiblity with ``nginx`` >= 1.5.9.
+
+ * the ``PRIVATE_STORAGE_NGINX_VERSION`` is now used to determine proper behaviour, which defaults to assuming >=1.5.9
+
 Changes in 2.1 (2018-05-08)
 ---------------------------
 

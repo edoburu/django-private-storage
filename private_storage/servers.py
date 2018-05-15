@@ -158,8 +158,8 @@ class NginxXAccelRedirectServer(object):
             # versions of Nginx before 1.5.9
             return nginx_version >= (1, 5, 9)
 
-        # preserve old behaviour by default to avoid breaking compatibility
-        return False
+        # nginx 1.5.9 was released in 2014, so just assume most people have that
+        return True
 
     @staticmethod
     @add_no_cache_headers
