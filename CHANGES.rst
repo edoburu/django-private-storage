@@ -1,12 +1,14 @@
 Changelog
 =========
 
-Changes in x.y (Date TBD)
----------------------------
+Changes in 2.1.1 (2018-05-16)
+-----------------------------
 
-* Fixed ``X-Accel-Redirect`` non-ascii filename URI encoding compatiblity with ``nginx`` >= 1.5.9.
+* Fixed ``X-Accel-Redirect`` non-ASCII filename encoding in Nginx.
 
- * the ``PRIVATE_STORAGE_NGINX_VERSION`` is now used to determine proper behaviour, which defaults to assuming >=1.5.9
+ * For very old Nginx versions, you'll have to configure ``PRIVATE_STORAGE_NGINX_VERSION``,
+   because Nginx versions before 1.5.9 (released in 2014) handle non-ASCII filenames differently.
+
 
 Changes in 2.1 (2018-05-08)
 ---------------------------
