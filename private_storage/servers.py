@@ -14,6 +14,13 @@ from django.utils.lru_cache import lru_cache
 from django.utils.module_loading import import_string
 from django.views.static import serve, was_modified_since
 
+try:
+    # python 3
+    from urllib.parse import quote
+except ImportError:
+    # python 2
+    from urllib import quote
+
 
 @lru_cache()
 def get_server_class(path):
@@ -45,6 +52,7 @@ def add_no_cache_headers(func):
         response['Expires'] = 'Thu, 01 Jan 1970 00:00:00 GMT'  # HTTP 1.0 proxies
         response['Cache-Control'] = 'max-age=0, no-cache, must-revalidate, proxy-revalidate'  # HTTP 1.1
         return response
+
     return _dec
 
 
@@ -136,9 +144,29 @@ class NginxXAccelRedirectServer(object):
     """
 
     @staticmethod
+    def should_quote():
+        # newer versions of nginx require a properly encoded URI in the X-Accel-Redirected response
+        # according to research done by people on the django-sendfile issue tracker, the specific
+        # version number seems to be 1.5.9
+        # https://github.com/adnrs96/django-sendfile/commit/4488e520f04661136e88be38281e789ae50a260c
+        nginx_version = getattr(settings, 'PRIVATE_STORAGE_NGINX_VERSION', None)
+
+        if nginx_version:
+            nginx_version = tuple(map(int, nginx_version.split('.')))
+            # Since Starting with Nginx 1.5.9, quoted url's are expected to be
+            # sent with X-Accel-Redirect headers, we will not quote url's for
+            # versions of Nginx before 1.5.9
+            return nginx_version >= (1, 5, 9)
+
+        # nginx 1.5.9 was released in 2014, so just assume most people have that
+        return True
+
+    @staticmethod
     @add_no_cache_headers
     def serve(private_file):
         internal_url = os.path.join(settings.PRIVATE_STORAGE_INTERNAL_URL, private_file.relative_name)
+        if NginxXAccelRedirectServer.should_quote():
+            internal_url = quote(internal_url)
         response = HttpResponse()
         response['X-Accel-Redirect'] = internal_url
         response['Content-Type'] = private_file.content_type
