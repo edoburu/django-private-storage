@@ -1,5 +1,8 @@
+from django.test import RequestFactory, SimpleTestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
 
+from private_storage.models import PrivateFile
+from private_storage.storage import private_storage
 from private_storage.tests.models import CustomerDossier, CustomerDossierJoin, SimpleDossier, \
     UploadToCallableDossier, UploadToDossier
 from private_storage.tests.utils import PrivateFileTestCase
@@ -26,3 +29,10 @@ class ModelTests(PrivateFileTestCase):
     def test_upload_subfolder_join(self):
         obj = CustomerDossierJoin.objects.create(customer='cust4', file=SimpleUploadedFile('test6.txt', b'test6'))
         self.assertExists('CustomerDossierJoin', 'cust4', 'sub2', 'test6.txt')
+
+
+class PrivateFileTests(SimpleTestCase):
+    def test_privatefile_exists_none(self):
+        # Retrieving a FieldFile(none) should not give errors
+        request = RequestFactory().get('/')
+        self.assertFalse(PrivateFile(request, private_storage, None).exists())

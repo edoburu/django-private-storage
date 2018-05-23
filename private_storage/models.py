@@ -35,7 +35,7 @@ class PrivateFile(object):
         """
         Check whether the file exists.
         """
-        return self.storage.exists(self.relative_name)
+        return self.relative_name and self.storage.exists(self.relative_name)
 
     @cached_property
     def content_type(self):
