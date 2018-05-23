@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Changes in 2.1.2 (2018-05-23)
+-----------------------------
+
+* Fixed ``PrivateFile.exists()`` check for ``<FieldFile: None>`` values.
+* Added ``PrivateFile.__repr__()``
+
+
 Changes in 2.1.1 (2018-05-16)
 -----------------------------
 
