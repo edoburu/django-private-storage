@@ -15,6 +15,9 @@ class PrivateFile(object):
         self.relative_name = relative_name
         self.parent_object = parent_object
 
+    def __repr__(self):
+        return '<PrivateFile: {}>'.format(self.relative_name)
+
     @cached_property
     def full_path(self):
         # Not using self.storage.open() as the X-Sendfile needs a normal path.
