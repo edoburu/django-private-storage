@@ -63,8 +63,17 @@ class PrivateFileField(models.FileField):
 
         return data
 
+    @staticmethod
+    def set_base_folder():
+        """
+        You can override this if you are wanting to dynamically change the folder a file gets uploaded to.
+
+        :return:
+        """
+        return []
+
     def generate_filename(self, instance, filename):
-        path_parts = []
+        path_parts = self.set_base_folder()
 
         if self.upload_to:
             # Support the upload_to callable that Django provides
