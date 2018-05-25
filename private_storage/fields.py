@@ -63,7 +63,8 @@ class PrivateFileField(models.FileField):
 
         return data
 
-    def set_base_folder(self):
+    @staticmethod
+    def set_base_folder():
         """
         You can override this if you are wanting to dynamically change the folder a file gets uploaded to.
 
