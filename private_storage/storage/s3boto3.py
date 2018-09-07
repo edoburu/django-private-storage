@@ -24,7 +24,7 @@ class PrivateS3BotoStorage(S3Boto3Storage):
     secret_key = setting('AWS_PRIVATE_S3_SECRET_ACCESS_KEY', setting('AWS_PRIVATE_SECRET_ACCESS_KEY', S3Boto3Storage.secret_key))
     file_overwrite = setting('AWS_PRIVATE_S3_FILE_OVERWRITE', False)  # false, differ from base class
     object_parameters = setting('AWS_PRIVATE_S3_OBJECT_PARAMETERS', {})
-    bucket_name = setting('AWS_PRIVATE_STORAGE_BUCKET_NAME', strict=True)
+    bucket_name = setting('AWS_PRIVATE_STORAGE_BUCKET_NAME')
     auto_create_bucket = setting('AWS_PRIVATE_AUTO_CREATE_BUCKET', False)
     default_acl = setting('AWS_PRIVATE_DEFAULT_ACL', 'private')  # differ from base class
     bucket_acl = setting('AWS_PRIVATE_BUCKET_ACL', default_acl)
