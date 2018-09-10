@@ -32,7 +32,7 @@ class PrivateFileField(models.FileField):
     """
     default_error_messages = {
         'invalid_file_type': _('File type not supported.'),
-        'file_too_large': _('The file may not be larger then {max_size}.'),
+        'file_too_large': _('The file may not be larger than {max_size}.'),
     }
 
     def __init__(self, *args, **kwargs):
