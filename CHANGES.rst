@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Changes in 2.1.3 (2018-09-10)
+-----------------------------
+
+* Fixed spelling error in "file too large" error.
+* Fixed compatibility with latest django-storages_ which removed the ``strict`` setting keyword.
+
+
 Changes in 2.1.2 (2018-05-23)
 -----------------------------
 
