@@ -1,6 +1,7 @@
 # encoding: utf-8
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.http import FileResponse
 from django.test import RequestFactory
 
 from private_storage.tests.models import CustomerDossier
@@ -19,26 +20,34 @@ class ViewTests(PrivateFileTestCase):
             file=SimpleUploadedFile('test4.txt', b'test4')
         )
 
-        request = RequestFactory().get('/cust1/file/')
-        request.user = User.objects.create_superuser('admin', 'admin@example.com', 'admin')
+        superuser = User.objects.create_superuser('admin', 'admin@example.com', 'admin')
 
-        # Initialize locally, no need for urls.py etc..
-        # This behaves like a standard DetailView
-        view = PrivateStorageDetailView.as_view(
-            model=CustomerDossier,
-            slug_url_kwarg='customer',
-            slug_field='customer',
-            model_file_field='file'
-        )
+        # Test HEAD calls too
+        for method in ('GET', 'HEAD'):
+            request = RequestFactory().generic(method, '/cust1/file/')
+            request.user = superuser
 
-        response = view(
-            request,
-            customer='cust1',
-        )
-        self.assertEqual(list(response.streaming_content), [b'test4'])
-        self.assertEqual(response['Content-Type'], 'text/plain')
-        self.assertEqual(response['Content-Length'], '5')
-        self.assertIn('Last-Modified', response)
+            # Initialize locally, no need for urls.py etc..
+            # This behaves like a standard DetailView
+            view = PrivateStorageDetailView.as_view(
+                model=CustomerDossier,
+                slug_url_kwarg='customer',
+                slug_field='customer',
+                model_file_field='file'
+            )
+
+            response = view(
+                request,
+                customer='cust1',
+            )
+            if method == 'HEAD':
+                self.assertNotIsInstance(response, FileResponse)
+                self.assertEqual(response.content, b'')
+            else:
+                self.assertEqual(list(response.streaming_content), [b'test4'])
+            self.assertEqual(response['Content-Type'], 'text/plain')
+            self.assertEqual(response['Content-Length'], '5')
+            self.assertIn('Last-Modified', response)
 
     def test_private_file_view(self):
         """
@@ -50,25 +59,32 @@ class ViewTests(PrivateFileTestCase):
         )
         self.assertExists('CustomerDossier', 'cust2', 'test5.txt')
 
-        request = RequestFactory().get('/cust1/file/')
-        request.user = User.objects.create_superuser('admin', 'admin@example.com', 'admin')
-        request.META['HTTP_USER_AGENT'] = 'Test'
-
         # Initialize locally, no need for urls.py etc..
         # This behaves like a standard DetailView
         view = PrivateStorageView.as_view(
             content_disposition='attachment',
         )
+        superuser = User.objects.create_superuser('admin', 'admin@example.com', 'admin')
 
-        response = view(
-            request,
-            path='CustomerDossier/cust2/test5.txt'
-        )
-        self.assertEqual(list(response.streaming_content), [b'test5'])
-        self.assertEqual(response['Content-Type'], 'text/plain')
-        self.assertEqual(response['Content-Length'], '5')
-        self.assertEqual(response['Content-Disposition'], "attachment; filename*=UTF-8''test5.txt")
-        self.assertIn('Last-Modified', response)
+        # Test HEAD calls too
+        for method in ('GET', 'HEAD'):
+            request = RequestFactory().generic(method, '/cust1/file/')
+            request.user = superuser
+            request.META['HTTP_USER_AGENT'] = 'Test'
+
+            response = view(
+                request,
+                path='CustomerDossier/cust2/test5.txt'
+            )
+            if method == 'HEAD':
+                self.assertNotIsInstance(response, FileResponse)
+                self.assertEqual(response.content, b'')
+            else:
+                self.assertEqual(list(response.streaming_content), [b'test5'])
+            self.assertEqual(response['Content-Type'], 'text/plain')
+            self.assertEqual(response['Content-Length'], '5')
+            self.assertEqual(response['Content-Disposition'], "attachment; filename*=UTF-8''test5.txt")
+            self.assertIn('Last-Modified', response)
 
     def test_private_file_view_utf8(self):
         """
@@ -85,7 +101,7 @@ class ViewTests(PrivateFileTestCase):
         view = PrivateStorageView.as_view(
             content_disposition='attachment',
         )
-        admin = User.objects.create_superuser('admin', 'admin@example.com', 'admin')
+        superuser = User.objects.create_superuser('admin', 'admin@example.com', 'admin')
 
         for user_agent, expect_header in [
                 ('Firefox', "attachment; filename*=UTF-8''Heiz%C3%B6lr%C3%BCcksto%C3%9Fabd%C3%A4mpfung.txt"),
@@ -93,16 +109,21 @@ class ViewTests(PrivateFileTestCase):
                 ('MSIE', 'attachment; filename=Heiz%C3%B6lr%C3%BCcksto%C3%9Fabd%C3%A4mpfung.txt'),
                 ]:
 
-            request = RequestFactory().get('/cust1/file/')
-            request.user = admin
-            request.META['HTTP_USER_AGENT'] = user_agent
+            for method in ('GET', 'HEAD'):
+                request = RequestFactory().generic(method, '/cust1/file/')
+                request.user = superuser
+                request.META['HTTP_USER_AGENT'] = user_agent
 
-            response = view(
-                request,
-                path=u'CustomerDossier/cust2/Heizölrückstoßabdämpfung.txt'
-            )
-            self.assertEqual(list(response.streaming_content), [b'test5'])
-            self.assertEqual(response['Content-Type'], 'text/plain')
-            self.assertEqual(response['Content-Length'], '5')
-            self.assertEqual(response['Content-Disposition'], expect_header, user_agent)
-            self.assertIn('Last-Modified', response)
+                response = view(
+                    request,
+                    path=u'CustomerDossier/cust2/Heizölrückstoßabdämpfung.txt'
+                )
+                if method == 'HEAD':
+                    self.assertNotIsInstance(response, FileResponse)
+                    self.assertEqual(response.content, b'')
+                else:
+                    self.assertEqual(list(response.streaming_content), [b'test5'])
+                self.assertEqual(response['Content-Type'], 'text/plain')
+                self.assertEqual(response['Content-Length'], '5')
+                self.assertEqual(response['Content-Disposition'], expect_header, user_agent)
+                self.assertIn('Last-Modified', response)

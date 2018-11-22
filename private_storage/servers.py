@@ -78,7 +78,11 @@ class DjangoStreamingServer(object):
         # As of Django 1.8, FileResponse triggers 'wsgi.file_wrapper' in Django's WSGIHandler.
         # This uses efficient file streaming, such as sendfile() in uWSGI.
         # When the WSGI container doesn't provide 'wsgi.file_wrapper', it submits the file in 4KB chunks.
-        response = FileResponse(private_file.open())
+        if private_file.request.method == 'HEAD':
+            # Avoid reading the file at all
+            response = HttpResponse()
+        else:
+            response = FileResponse(private_file.open())
         response['Content-Type'] = private_file.content_type
         response['Content-Length'] = size
         response["Last-Modified"] = http_date(mtime)
@@ -113,7 +117,15 @@ class DjangoServer(DjangoStreamingServer):
             return DjangoStreamingServer.serve(private_file)
         else:
             # Using Django's serve gives If-Modified-Since support out of the box.
-            return serve(private_file.request, full_path, document_root='/', show_indexes=False)
+            response = serve(private_file.request, full_path, document_root='/', show_indexes=False)
+            if private_file.request.method == 'HEAD':
+                # Avoid reading the file at all, copy FileResponse headers
+                head_response = HttpResponse(status=response.status_code)
+                for header, value in response.items():
+                    head_response[header] = value
+                return head_response
+            else:
+                return response
 
 
 class ApacheXSendfileServer(object):

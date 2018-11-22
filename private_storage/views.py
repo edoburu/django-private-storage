@@ -3,7 +3,7 @@ Views to send private files.
 """
 import os
 
-from django.http import Http404, HttpResponseForbidden
+from django.http import Http404, HttpResponse, HttpResponseForbidden
 from django.utils.module_loading import import_string
 from django.views.generic import View
 from django.views.generic.detail import SingleObjectMixin
