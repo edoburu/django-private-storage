@@ -118,8 +118,9 @@ class DjangoServer(DjangoStreamingServer):
         else:
             # Using Django's serve gives If-Modified-Since support out of the box.
             response = serve(private_file.request, full_path, document_root='/', show_indexes=False)
-            if private_file.request.method == 'HEAD':
+            if private_file.request.method == 'HEAD' and response.status_code == 200:
                 # Avoid reading the file at all, copy FileResponse headers
+                # This is not needed for HttpResponseNotModified(), hence the 200 code check
                 head_response = HttpResponse(status=response.status_code)
                 for header, value in response.items():
                     head_response[header] = value
