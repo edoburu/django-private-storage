@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Changes in 2.2a1 (2018-11-22)
+-----------------------------
+
+* Added efficient ``HEAD`` request handling.
+
+
 Changes in 2.1.3 (2018-09-10)
 -----------------------------
 
