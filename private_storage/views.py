@@ -3,10 +3,11 @@ Views to send private files.
 """
 import os
 
-from django.http import Http404, HttpResponse, HttpResponseForbidden
+from django.http import Http404
 from django.utils.module_loading import import_string
 from django.views.generic import View
 from django.views.generic.detail import SingleObjectMixin
+from django.core.exceptions import PermissionDenied
 
 from . import appconfig
 from .models import PrivateFile
@@ -39,6 +40,9 @@ class PrivateStorageView(View):
     #: The filename to use when :attr:`content_disposition` is set.
     content_disposition_filename = None
 
+    #: Message to be displayed when the user cannot access the requested file.
+    permission_denied_message = "Private storage access denied"
+
     def get_path(self):
         """
         Determine the path for the object to provide.
@@ -70,7 +74,7 @@ class PrivateStorageView(View):
         private_file = self.get_private_file()
 
         if not self.can_access_file(private_file):
-            return HttpResponseForbidden('Private storage access denied')
+            raise PermissionDenied(self.permission_denied_message)
 
         if not private_file.exists():
             return self.serve_file_not_found(private_file)
