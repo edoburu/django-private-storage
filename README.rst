@@ -195,6 +195,20 @@ For apache
 
     PRIVATE_STORAGE_SERVER = 'apache'
 
+This requires in addition an installed and activated mod_xsendfile Apache module.
+Add the following XSendFile configurations to your conf.d config file.
+
+.. code-block:: apache
+
+    <virtualhost ...>
+    ...
+    WSGIScriptAlias / ...
+    XSendFile On
+    XSendFilePath ... [path to where the files are, same as PRIVATE_STORAGE_ROOT]
+    ...
+    </virtualhost>
+
+
 For Nginx
 ~~~~~~~~~
 
