@@ -289,6 +289,18 @@ Contributing
 This module is designed to be generic. In case there is anything you didn't like about it,
 or think it's not flexible enough, please let us know. We'd love to improve it!
 
+Running tests
+~~~~~~~~~~~~~
+
+We use tox to run the test suite on different versions locally (and travis-ci to automate the check for PRs).
+
+To tun the test suite locally, please make sure your python environment has tox and django installed::
+
+    python3.6 -m pip install tox django
+
+And then simply execute tox to run the whole test matrix::
+
+    tox
 
 .. _django-storages: https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
 .. _query parameter authentication: https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-query-string-auth.html
