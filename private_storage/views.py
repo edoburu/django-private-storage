@@ -126,7 +126,7 @@ class PrivateStorageView(View):
         The filename, encoded to use in a ``Content-Disposition`` header.
         """
         # Based on https://www.djangosnippets.org/snippets/1710/
-        user_agent = self.request.META.get('HTTP_USER_AGENT', None)
+        user_agent = self.request.META.get('HTTP_USER_AGENT', '')
         if 'WebKit' in user_agent:
             # Support available for UTF-8 encoded strings.
             # This also matches Edgee.
