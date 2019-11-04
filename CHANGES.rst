@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Changes in 2.2.1 (2019-11-04)
+-----------------------------
+
+* Make sure custom ``403.html`` template is used when access is denied.
+* Fixed accessing files when the ``User-Agent`` header is not set.
+
+
 Changes in 2.2 (2019-04-08)
 ---------------------------
 
