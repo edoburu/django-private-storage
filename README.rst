@@ -124,7 +124,7 @@ The following options are available out of the box:
 * ``private_storage.permissions.allow_superuser``
 
 You can create a custom function, and use that instead.
-The function receives a ``private_storate.models.PrivateFile`` object,
+The function receives a ``private_storage.models.PrivateFile`` object,
 which has the following fields:
 
 * ``request``: the Django request.
