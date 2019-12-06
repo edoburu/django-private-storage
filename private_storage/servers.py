@@ -4,13 +4,12 @@ Sending files efficiently for different kind of webservers.
 import os
 import sys
 import time
-from functools import wraps
+from functools import lru_cache, wraps
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.http import FileResponse, HttpResponse, HttpResponseNotModified
 from django.utils.http import http_date
-from django.utils.lru_cache import lru_cache
 from django.utils.module_loading import import_string
 from django.views.static import serve, was_modified_since
 
