@@ -7,13 +7,14 @@ import os
 import posixpath
 import warnings
 
+from six import string_types
+
 import django
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import UploadedFile
 from django.db import models
 from django.template.defaultfilters import filesizeformat
 from django.utils.encoding import force_str, force_text
-from django.utils.six import string_types
 from django.utils.translation import ugettext_lazy as _
 
 from .storage import private_storage
