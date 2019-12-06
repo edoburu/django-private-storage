@@ -9,6 +9,8 @@ env:
 - DJANGO="django>=1.10.0,<1.11.0"
 - DJANGO="django>=1.11.0,<1.12.0"
 - DJANGO="django>=2.0,<2.1"
+- DJANGO="django>=2.1,<2.2"
+- DJANGO="django>=2.2,<2.3"
 matrix:
   exclude:
   - python: 2.7
