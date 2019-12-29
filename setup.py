@@ -38,7 +38,9 @@ setup(
     version=find_version('private_storage', '__init__.py'),
     license='Apache 2.0',
 
-    install_requires=[],
+    install_requires=[
+        'six'
+    ],
     requires=[
         'Django (>=1.7.4)',
     ],

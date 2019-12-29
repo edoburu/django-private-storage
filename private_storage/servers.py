@@ -10,7 +10,10 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.http import FileResponse, HttpResponse, HttpResponseNotModified
 from django.utils.http import http_date
-from django.utils.lru_cache import lru_cache
+try:
+    from django.utils.lru_cache import lru_cache
+except ImportError:
+    from functools import lru_cache
 from django.utils.module_loading import import_string
 from django.views.static import serve, was_modified_since
 
