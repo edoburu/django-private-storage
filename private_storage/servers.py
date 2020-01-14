@@ -10,16 +10,17 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.http import FileResponse, HttpResponse, HttpResponseNotModified
 from django.utils.http import http_date
-from django.utils.lru_cache import lru_cache
 from django.utils.module_loading import import_string
 from django.views.static import serve, was_modified_since
 
 try:
     # python 3
     from urllib.parse import quote
+    from functools import lru_cache  # Python 3
 except ImportError:
     # python 2
     from urllib import quote
+    from django.utils.lru_cache import lru_cache  # Django <3
 
 
 @lru_cache()

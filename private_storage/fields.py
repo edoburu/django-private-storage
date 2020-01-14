@@ -6,6 +6,7 @@ import logging
 import os
 import posixpath
 import warnings
+import sys
 
 import django
 from django.core.exceptions import ValidationError
@@ -13,12 +14,18 @@ from django.core.files.uploadedfile import UploadedFile
 from django.db import models
 from django.template.defaultfilters import filesizeformat
 from django.utils.encoding import force_str, force_text
-from django.utils.six import string_types
 from django.utils.translation import ugettext_lazy as _
+
 
 from .storage import private_storage
 
 logger = logging.getLogger(__name__)
+
+
+try:
+    string_types = basestring,  # Python 2
+except NameError:
+    string_types = str,  # Python 3
 
 
 class PrivateFileField(models.FileField):
