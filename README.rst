@@ -182,7 +182,7 @@ There are more efficient ways to transfer files, such as the ``sendfile()`` syst
 Django uses such feature when the WSGI server provides ``wsgi.file_handler`` support.
 
 In some situations, this effect is nullified,
-for example by by a local HTTP server sitting in front of the WSGI container.
+for example by a local HTTP server sitting in front of the WSGI container.
 A typical case would be  running Gunicorn behind an Nginx or Apache webserver.
 
 For such situation, the native support of the
