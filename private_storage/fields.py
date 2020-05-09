@@ -14,6 +14,7 @@ from django.core.files.uploadedfile import UploadedFile
 from django.core.files.images import ImageFile
 from django.db import models
 from django.db.models.fields.files import ImageFileDescriptor
+from django.forms import ImageField
 from django.template.defaultfilters import filesizeformat
 from django.utils.encoding import force_str, force_text
 from django.utils.translation import ugettext_lazy as _
@@ -226,6 +227,6 @@ class PrivateImageField(PrivateFileField):
 
     def formfield(self, **kwargs):
         return super().formfield(**{
-            'form_class': forms.ImageField,
+            'form_class': ImageField,
             **kwargs,
         })
