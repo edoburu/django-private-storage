@@ -13,7 +13,7 @@ from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import UploadedFile
 from django.core.files.images import ImageFile
 from django.db import models
-from django.db.models.fields.files import ImageFileDescriptor
+from django.db.models.fields.files import ImageFileDescriptor, FieldFile
 from django.forms import ImageField
 from django.template.defaultfilters import filesizeformat
 from django.utils.encoding import force_str, force_text
@@ -112,7 +112,7 @@ class PrivateFileField(models.FileField):
         return os.path.normpath(self.storage.get_valid_name(os.path.basename(filename)))
 
 
-class ImageFieldFile(ImageFile, PrivateFileField):
+class ImageFieldFile(ImageFile, FieldFile):
     def delete(self, save=True):
         # Clear the image dimensions cache
         if hasattr(self, '_dimensions_cache'):
