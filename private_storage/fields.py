@@ -11,9 +11,8 @@ import django
 from django.core import checks
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import UploadedFile
-from django.core.files.images import ImageFile
 from django.db import models
-from django.db.models.fields.files import ImageFileDescriptor, FieldFile
+from django.db.models.fields.files import ImageFileDescriptor, ImageFieldFile
 from django.forms import ImageField
 from django.template.defaultfilters import filesizeformat
 from django.utils.encoding import force_str, force_text
@@ -110,14 +109,6 @@ class PrivateFileField(models.FileField):
         # As of Django 1.10+, file names are no longer cleaned locally, but cleaned by the storage.
         # This compatibility function makes sure all Django versions generate a safe filename.
         return os.path.normpath(self.storage.get_valid_name(os.path.basename(filename)))
-
-
-class ImageFieldFile(ImageFile, FieldFile):
-    def delete(self, save=True):
-        # Clear the image dimensions cache
-        if hasattr(self, '_dimensions_cache'):
-            del self._dimensions_cache
-        super().delete(save)
 
 
 class PrivateImageField(PrivateFileField):
