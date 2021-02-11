@@ -25,7 +25,7 @@ class PrivateS3BotoStorage(S3Boto3Storage):
         self.bucket_name = setting('AWS_PRIVATE_STORAGE_BUCKET_NAME')
         self.auto_create_bucket = setting('AWS_PRIVATE_AUTO_CREATE_BUCKET', False)
         self.default_acl = setting('AWS_PRIVATE_DEFAULT_ACL', 'private')  # differ from base class
-        self.bucket_acl = setting('AWS_PRIVATE_BUCKET_ACL', default_acl)
+        self.bucket_acl = setting('AWS_PRIVATE_BUCKET_ACL', self.default_acl)
         self.querystring_auth = setting('AWS_PRIVATE_QUERYSTRING_AUTH', True)
         self.querystring_expire = setting('AWS_PRIVATE_QUERYSTRING_EXPIRE', 3600)
         self.signature_version = setting('AWS_PRIVATE_S3_SIGNATURE_VERSION')
