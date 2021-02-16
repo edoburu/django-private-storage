@@ -44,7 +44,7 @@ class PrivateS3BotoStorage(S3Boto3Storage):
         # are now part of the initialization or moved to a dictionary
         self.access_key = setting('AWS_PRIVATE_S3_ACCESS_KEY_ID', setting('AWS_PRIVATE_ACCESS_KEY_ID', self.access_key))
         self.secret_key = setting('AWS_PRIVATE_S3_SECRET_ACCESS_KEY', setting('AWS_PRIVATE_SECRET_ACCESS_KEY', self.secret_key))
-        if hasattr(self, get_default_settings):
+        if hasattr(self, "get_default_settings"):
             default_settings = self.get_default_settings()
             self.gzip = setting('AWS_PRIVATE_IS_GZIPPED', default_settings["gzip"])  # fallback to default
             self.url_protocol = setting('AWS_PRIVATE_S3_URL_PROTOCOL', default_settings["url_protocol"])  # fallback to default
