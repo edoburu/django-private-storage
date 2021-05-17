@@ -1,6 +1,17 @@
 Changelog
 =========
 
+Changes in 2.3 (2021-05-17)
+---------------------------
+
+* Added PrivateImageField.
+* Added French locale.
+* Fixed support for django-storages > 1.10.
+* Fixed Django 4 deprecation warnings
+* Dropped Python 3 support.
+* Dropped Django 1.8/1.9/1.10/1.11 support.
+
+
 Changes in 2.2.2 (2020-01-14)
 -----------------------------
 
