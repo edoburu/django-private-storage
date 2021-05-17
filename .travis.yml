@@ -11,7 +11,7 @@ env:
 - DJANGO="https://github.com/django/django/archive/main.tar.gz"
 matrix:
   allow_failures:
-  - env: DJANGO='https://github.com/django/django/archive/main.tar.gz'
+  - env: DJANGO="https://github.com/django/django/archive/main.tar.gz"
 
 before_install:
 - pip install codecov
