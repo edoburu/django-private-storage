@@ -69,6 +69,28 @@ The ``PrivateFileField`` also accepts the following kwargs:
 * ``max_file_size``: maximum file size in bytes. (1MB is 1024 * 1024)
 * ``storage``: the storage object to use, defaults to ``private_storage.storage.private_storage``
 
+
+Images
+------
+
+You can also use ``PrivateImageField`` which only allows you to upload images:
+
+.. code-block:: python
+
+    from django.db import models
+    from private_storage.fields import PrivateImageField
+
+    class MyModel(models.Model):
+        title = models.CharField("Title", max_length=200)
+        width = models.PositiveSmallIntegerField(default=0)
+        height = models.PositiveSmallIntegerField(default=0)
+        image = PrivateFileField("Image", width_field='width', height_field='height')
+
+The ``PrivateImageField`` also accepts the following kwargs on top of ``PrivateFileField``:
+
+* ``width_field``: optional field for that stores the width of the image
+* ``height_field``: optional field for that stores the height of the image
+
 Other topics
 ============
 
