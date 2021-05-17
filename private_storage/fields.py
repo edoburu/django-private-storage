@@ -16,7 +16,7 @@ from django.db.models.fields.files import ImageFileDescriptor, ImageFieldFile
 from django.forms import ImageField
 from django.template.defaultfilters import filesizeformat
 from django.utils.encoding import force_str, force_text
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from .storage import private_storage
 
