@@ -1,5 +1,5 @@
-from django.test import RequestFactory, SimpleTestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import RequestFactory, SimpleTestCase
 
 from private_storage.models import PrivateFile
 from private_storage.storage import private_storage

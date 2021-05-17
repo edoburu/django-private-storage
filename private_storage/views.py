@@ -4,11 +4,11 @@ Views to send private files.
 import os
 from urllib.parse import quote
 
+from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.utils.module_loading import import_string
 from django.views.generic import View
 from django.views.generic.detail import SingleObjectMixin
-from django.core.exceptions import PermissionDenied
 
 from . import appconfig
 from .models import PrivateFile

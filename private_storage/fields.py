@@ -10,7 +10,7 @@ from django.core import checks
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import UploadedFile
 from django.db import models
-from django.db.models.fields.files import ImageFileDescriptor, ImageFieldFile
+from django.db.models.fields.files import ImageFieldFile, ImageFileDescriptor
 from django.forms import ImageField
 from django.template.defaultfilters import filesizeformat
 from django.utils.encoding import force_str, force_text

@@ -2,11 +2,12 @@ try:
     from django.urls import reverse
 except ImportError:
     from django.core.urlresolvers import reverse
-from django.utils.deconstruct import deconstructible
 
-from private_storage import appconfig
+from django.utils.deconstruct import deconstructible
 from storages.backends.s3boto3 import S3Boto3Storage
 from storages.utils import setting
+
+from private_storage import appconfig
 
 
 @deconstructible
