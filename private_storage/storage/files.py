@@ -2,15 +2,11 @@
 Django Storage interface, using the file system backend.
 """
 from django.core.files.storage import FileSystemStorage
+from django.urls import reverse_lazy
 from django.utils.deconstruct import deconstructible
 from django.utils.encoding import force_text
 
 from private_storage import appconfig
-
-try:
-    from django.urls import reverse_lazy  # Added in Django 1.10
-except ImportError:
-    from django.core.urlresolvers import reverse_lazy
 
 
 @deconstructible

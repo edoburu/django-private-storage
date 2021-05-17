@@ -41,6 +41,7 @@ if not settings.configured:
                 },
             },
         ],
+        DEFAULT_AUTO_FIELD='django.db.models.BigAutoField',
         AWS_PRIVATE_STORAGE_BUCKET_NAME='foobar',
         PRIVATE_STORAGE_ROOT=path.join(module_root, 'test-media-root'),
     )

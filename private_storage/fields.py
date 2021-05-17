@@ -1,6 +1,4 @@
 #-*- coding: utf-8 -*-
-from __future__ import unicode_literals
-
 import datetime
 import logging
 import os
@@ -21,12 +19,6 @@ from django.utils.translation import gettext_lazy as _
 from .storage import private_storage
 
 logger = logging.getLogger(__name__)
-
-
-try:
-    string_types = basestring,  # Python 2
-except NameError:
-    string_types = str,  # Python 3
 
 
 class PrivateFileField(models.FileField):
@@ -90,7 +82,7 @@ class PrivateFileField(models.FileField):
             extra_dirs = upload_subfolder(instance)
 
             # Avoid mistakes by developers, no "s/u/b/p/a/t/h/"
-            if isinstance(extra_dirs, string_types):
+            if isinstance(extra_dirs, str):
                 warnings.warn("{}.{}.upload_subfolder should return a list"
                               " to avoid path-separator issues.".format(
                     instance.__class__.__name__, self.name), UserWarning)
