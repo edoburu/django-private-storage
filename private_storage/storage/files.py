@@ -4,7 +4,7 @@ Django Storage interface, using the file system backend.
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse_lazy
 from django.utils.deconstruct import deconstructible
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 from private_storage import appconfig
 
@@ -32,6 +32,6 @@ class PrivateFileSystemStorage(FileSystemStorage):
             self.base_url = reverse_lazy('serve_private_file', kwargs={'path': ''})
 
     def url(self, name):
-        # Make sure reverse_lazy() is evaluated, as Python 3 won't do this here.
-        self.base_url = force_text(self.base_url)
+        # Make sure reverse_lazy() is evaluated
+        self.base_url = force_str(self.base_url)
         return super(PrivateFileSystemStorage, self).url(name)

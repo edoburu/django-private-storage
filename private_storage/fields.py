@@ -13,7 +13,7 @@ from django.db import models
 from django.db.models.fields.files import ImageFieldFile, ImageFileDescriptor
 from django.forms import ImageField
 from django.template.defaultfilters import filesizeformat
-from django.utils.encoding import force_str, force_text
+from django.utils.encoding import force_str
 from django.utils.translation import gettext_lazy as _
 
 from .storage import private_storage
@@ -72,7 +72,7 @@ class PrivateFileField(models.FileField):
                 dirname, filename = os.path.split(self.upload_to(instance, filename))
                 path_parts.append(dirname)
             else:
-                dirname = force_text(datetime.datetime.now().strftime(force_str(self.upload_to)))
+                dirname = force_str(datetime.datetime.now().strftime(force_str(self.upload_to)))
                 path_parts.append(dirname)
 
         # Add our custom subdir function.
