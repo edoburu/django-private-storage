@@ -133,6 +133,37 @@ and ``AWS_PRIVATE_S3_SIGNATURE_VERSION`` or use:
 
 Make sure an encryption key is generated on Amazon.
 
+MinIO storage
+--------------------------
+
+Define one of these settings :
+
+.. code-block:: python
+
+    PRIVATE_STORAGE_CLASS = 'private_storage.storage.minio.PrivateMinioStorage'
+
+    MINIO_PRIVATE_STORAGE_MEDIA_BUCKET_NAME = 'private-files'
+    MINIO_PRIVATE_STORAGE_MEDIA_URL= '/private-files'
+
+This uses django-minio-storage_ settings. Replace the prefix ``MINIO_`` with ``MINIO_PRIVATE_``.
+The all settings are reused when they don't have an corresponding ``MINIO_PRIVATE_...`` setting.
+
+* ``MINIO_STORAGE_ENDPOINT``
+* ``MINIO_STORAGE_ACCESS_KEY``
+* ``MINIO_STORAGE_SECRET_KEY``
+* ``MINIO_STORAGE_USE_HTTPS``
+* ``MINIO_STORAGE_MEDIA_BUCKET_NAME``
+* ``MINIO_STORAGE_MEDIA_URL``
+* ``MINIO_STORAGE_AUTO_CREATE_MEDIA_BUCKET``
+* ``MINIO_STORAGE_AUTO_CREATE_MEDIA_POLICY``
+* ``MINIO_STORAGE_MEDIA_USE_PRESIGNED``
+* ``MINIO_STORAGE_MEDIA_BACKUP_FORMAT``
+* ``MINIO_STORAGE_ASSUME_MEDIA_BUCKET_EXISTS``
+* ``MINIO_STORAGE_MEDIA_OBJECT_METADATA``
+
+As with S3, you can enable proxy through our ``PrivateFileView`` URL.
+Just specify ``PRIVATE_STORAGE_MINO_REVERSE_PROXY = True``.
+
 Defining access rules
 ---------------------
 
@@ -325,4 +356,5 @@ And then simply execute tox to run the whole test matrix::
     tox
 
 .. _django-storages: https://django-storages.readthedocs.io/en/latest/backends/amazon-S3.html
+.. _django-minio-storage: https://django-minio-storage.readthedocs.io/en/latest/usage/#django-settings-configuration
 .. _query parameter authentication: https://docs.aws.amazon.com/AmazonS3/latest/API/sigv4-query-string-auth.html
