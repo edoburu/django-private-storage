@@ -8,7 +8,7 @@ Changes in 2.3 (2021-05-17)
 * Added French locale.
 * Fixed support for django-storages > 1.10.
 * Fixed Django 4 deprecation warnings
-* Dropped Python 3 support.
+* Dropped Python 2.7/3.4/3.5 support.
 * Dropped Django 1.8/1.9/1.10/1.11 support.
 
 
