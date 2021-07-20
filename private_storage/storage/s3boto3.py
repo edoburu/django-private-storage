@@ -54,8 +54,6 @@ class PrivateS3BotoStorage(S3Boto3Storage):
             self.gzip = setting('AWS_PRIVATE_IS_GZIPPED', self.gzip)
             self.url_protocol = setting('AWS_PRIVATE_S3_URL_PROTOCOL', self.url_protocol)
             self.region_name = setting('AWS_PRIVATE_S3_REGION_NAME', self.region_name)
-            
-
 
     def url(self, name, *args, **kwargs):
         if appconfig.PRIVATE_STORAGE_S3_REVERSE_PROXY or not self.querystring_auth:
