@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Version 3.0 (2021-11-16)
+------------------------
+
+* Added Django 4 support.
+* Added minio storage support.
+
+
 Changes in 2.3 (2021-05-17)
 ---------------------------
 
