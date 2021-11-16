@@ -20,7 +20,7 @@ class PrivateFileSystemStorage(FileSystemStorage):
         if location is None:
             location = appconfig.PRIVATE_STORAGE_ROOT
 
-        super(PrivateFileSystemStorage, self).__init__(
+        super().__init__(
             location=location,
             base_url=base_url,
             **kwargs
@@ -34,4 +34,4 @@ class PrivateFileSystemStorage(FileSystemStorage):
     def url(self, name):
         # Make sure reverse_lazy() is evaluated
         self.base_url = force_str(self.base_url)
-        return super(PrivateFileSystemStorage, self).url(name)
+        return super().url(name)

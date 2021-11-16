@@ -1,4 +1,3 @@
-#-*- coding: utf-8 -*-
 import datetime
 import logging
 import os
@@ -41,10 +40,10 @@ class PrivateFileField(models.FileField):
         self.max_file_size = kwargs.pop("max_file_size", None)
 
         kwargs.setdefault('storage', private_storage)
-        super(PrivateFileField, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def clean(self, *args, **kwargs):
-        data = super(PrivateFileField, self).clean(*args, **kwargs)
+        data = super().clean(*args, **kwargs)
         file = data.file
         if isinstance(file, UploadedFile):
             # content_type is only available for uploaded files,

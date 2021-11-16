@@ -11,7 +11,7 @@ class PrivateFileTestCase(TestCase):
         """
         Empty the test folder after each test case.
         """
-        super(PrivateFileTestCase, self).tearDown()
+        super().tearDown()
         if os.path.exists(settings.PRIVATE_STORAGE_ROOT):
             shutil.rmtree(settings.PRIVATE_STORAGE_ROOT)
 

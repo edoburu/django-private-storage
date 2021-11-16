@@ -1,4 +1,3 @@
-# encoding: utf-8
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import FileResponse
@@ -92,9 +91,9 @@ class ViewTests(PrivateFileTestCase):
         """
         obj = CustomerDossier.objects.create(
             customer='cust2',
-            file=SimpleUploadedFile(u'Heizölrückstoßabdämpfung.txt', b'test5')
+            file=SimpleUploadedFile('Heizölrückstoßabdämpfung.txt', b'test5')
         )
-        self.assertExists('CustomerDossier', 'cust2', u'Heizölrückstoßabdämpfung.txt')
+        self.assertExists('CustomerDossier', 'cust2', 'Heizölrückstoßabdämpfung.txt')
 
         # Initialize locally, no need for urls.py etc..
         # This behaves like a standard DetailView
@@ -116,7 +115,7 @@ class ViewTests(PrivateFileTestCase):
 
                 response = view(
                     request,
-                    path=u'CustomerDossier/cust2/Heizölrückstoßabdämpfung.txt'
+                    path='CustomerDossier/cust2/Heizölrückstoßabdämpfung.txt'
                 )
                 if method == 'HEAD':
                     self.assertNotIsInstance(response, FileResponse)

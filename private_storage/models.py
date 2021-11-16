@@ -4,7 +4,7 @@ from django.core.files.storage import File, Storage
 from django.utils.functional import cached_property
 
 
-class PrivateFile(object):
+class PrivateFile:
     """
     A wrapper object that describes the file that is being accessed.
     """

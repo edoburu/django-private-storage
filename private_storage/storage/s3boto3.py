@@ -61,7 +61,7 @@ class PrivateS3BotoStorage(S3Boto3Storage):
             return reverse('serve_private_file', kwargs={'path': name})
         else:
             # The S3Boto3Storage can generate a presigned URL that is temporary available.
-            return super(PrivateS3BotoStorage, self).url(name, *args, **kwargs)
+            return super().url(name, *args, **kwargs)
 
 
 @deconstructible

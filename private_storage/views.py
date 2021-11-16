@@ -126,7 +126,7 @@ class PrivateStorageView(View):
         if 'WebKit' in user_agent:
             # Support available for UTF-8 encoded strings.
             # This also matches Edgee.
-            return u'filename={}'.format(filename).encode("utf-8")
+            return 'filename={}'.format(filename).encode("utf-8")
         elif 'MSIE' in user_agent:
             # IE does not support RFC2231 for internationalized headers, but somehow
             # percent-decodes it so this can be used instead. Note that using the word
@@ -155,7 +155,7 @@ class PrivateStorageDetailView(SingleObjectMixin, PrivateStorageView):
 
     def get(self, request, *args, **kwargs):
         self.object = self.get_object()
-        return super(PrivateStorageDetailView, self).get(request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
     def get_path(self):
         file = getattr(self.object, self.model_file_field)

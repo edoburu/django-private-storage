@@ -49,7 +49,7 @@ def add_no_cache_headers(func):
     return _dec
 
 
-class DjangoStreamingServer(object):
+class DjangoStreamingServer:
     """
     Serve static files through ``wsgi.file_wrapper`` or streaming chunks.
 
@@ -60,10 +60,7 @@ class DjangoStreamingServer(object):
     @add_no_cache_headers
     def serve(private_file):
         # Support If-Last-Modified
-        if sys.version_info >= (3,):
-            mtime = private_file.modified_time.timestamp()
-        else:
-            mtime = time.mktime(private_file.modified_time.timetuple())
+        mtime = private_file.modified_time.timestamp()
         size = private_file.size
         if not was_modified_since(private_file.request.META.get('HTTP_IF_MODIFIED_SINCE'), mtime, size):
             return HttpResponseNotModified()
@@ -122,7 +119,7 @@ class DjangoServer(DjangoStreamingServer):
                 return response
 
 
-class ApacheXSendfileServer(object):
+class ApacheXSendfileServer:
     """
     Serve files for Apache with ``X-Sendfile``.
     """
@@ -136,7 +133,7 @@ class ApacheXSendfileServer(object):
         return response
 
 
-class NginxXAccelRedirectServer(object):
+class NginxXAccelRedirectServer:
     """
     Serve the files for Nginx with ``X-Accel-Redirect``.
     Add the following configuration::
