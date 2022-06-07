@@ -302,9 +302,9 @@ For example:
 
     from django.db import models
     from private_storage.fields import PrivateFileField
-    from private_storage.storage.files import PrivateFileSystemStorage
+    from private_storage.storage import PrivateStorage
 
-    my_storage = PrivateFileSystemStorage(
+    my_storage = PrivateStorage(
         location='/path/to/storage2/',
         base_url='/private-documents2/'
     )
