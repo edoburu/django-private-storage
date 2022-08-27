@@ -44,7 +44,7 @@ Add to ``urls.py``:
     import private_storage.urls
 
     urlpatterns += [
-        url('^private-media/', include(private_storage.urls)),
+        path('private-media/', include(private_storage.urls)),
     ]
 
 Usage
