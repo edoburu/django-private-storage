@@ -7,6 +7,7 @@ import time
 from functools import lru_cache, wraps
 from urllib.parse import quote
 
+import django
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.http import FileResponse, HttpResponse, HttpResponseNotModified
@@ -62,7 +63,13 @@ class DjangoStreamingServer:
         # Support If-Last-Modified
         mtime = private_file.modified_time.timestamp()
         size = private_file.size
-        if not was_modified_since(private_file.request.META.get('HTTP_IF_MODIFIED_SINCE'), mtime, size):
+
+        if django_version_gte_than_4_1():
+            not_modified = not was_modified_since(private_file.request.META.get('HTTP_IF_MODIFIED_SINCE'), mtime)
+        else:
+            not_modified = not was_modified_since(private_file.request.META.get('HTTP_IF_MODIFIED_SINCE'), mtime, size)
+
+        if not_modified:
             return HttpResponseNotModified()
 
         # As of Django 1.8, FileResponse triggers 'wsgi.file_wrapper' in Django's WSGIHandler.
@@ -174,3 +181,9 @@ class NginxXAccelRedirectServer:
         response['X-Accel-Redirect'] = internal_url
         response['Content-Type'] = private_file.content_type
         return response
+
+
+@lru_cache()
+def _get_django_version_gte_4_1():
+    major, minor, *_ = django.VERSION
+    return major >= 4 and minor >= 1
