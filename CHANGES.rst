@@ -1,6 +1,12 @@
 Changelog
 =========
 
+Changes in 3.1 (2023-05-12)
+---------------------------
+
+* Fixed compatibility for Django 4.1, 4.2
+
+
 Version 3.0 (2021-11-16)
 ------------------------
 
