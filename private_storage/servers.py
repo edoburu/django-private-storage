@@ -79,7 +79,7 @@ class DjangoStreamingServer:
         else:
             response = FileResponse(private_file.open())
         response['Content-Type'] = private_file.content_type
-        response['Content-Length'] = size
+        response['Content-Length'] = private_file.size
         response["Last-Modified"] = http_date(mtime)
         return response
 
