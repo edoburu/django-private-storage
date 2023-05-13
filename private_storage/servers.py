@@ -10,6 +10,7 @@ from urllib.parse import quote
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.http import FileResponse, HttpResponse, HttpResponseNotModified
+from django.utils import version
 from django.utils.http import http_date
 from django.utils.module_loading import import_string
 from django.views.static import serve, was_modified_since
@@ -61,8 +62,13 @@ class DjangoStreamingServer:
     def serve(private_file):
         # Support If-Last-Modified
         mtime = private_file.modified_time.timestamp()
-        if not was_modified_since(private_file.request.META.get('HTTP_IF_MODIFIED_SINCE'), mtime):
-            return HttpResponseNotModified()
+        size = private_file.size
+        if version.get_main_version() >= '4.1':
+            was_modified = was_modified_since(private_file.request.META.get('HTTP_IF_MODIFIED_SINCE'), mtime)
+        else:
+            was_modified = was_modified_since(private_file.request.META.get('HTTP_IF_MODIFIED_SINCE'), mtime, size)
+
+        if not was_modified: return HttpResponseNotModified()
 
         # As of Django 1.8, FileResponse triggers 'wsgi.file_wrapper' in Django's WSGIHandler.
         # This uses efficient file streaming, such as sendfile() in uWSGI.
