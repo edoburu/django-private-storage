@@ -10,7 +10,7 @@ on:
 jobs:
   test:
     name: "Python ${{ matrix.python }} Django ${{ matrix.django }}"
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       # max-parallel: 8  # default is max available
       fail-fast: false
@@ -18,15 +18,21 @@ jobs:
         include:
           # Django 2.2
           - django: "2.2"
-            python: "3.6.14"
+            python: "3.6"
           # Django 3.1
           - django: "3.1"
-            python: "3.6.14"
+            python: "3.6"
           # Django 3.2
           - django: "3.2"
-            python: "3.6.14"
+            python: "3.6"
           # Django 4.0
-          - django: "4.0b1"
+          - django: "4.0"
+            python: "3.10"
+          # Django 4.1
+          - django: "4.1"
+            python: "3.10"
+          # Django 4.2
+          - django: "4.2"
             python: "3.10"
 
     steps:
@@ -34,10 +40,10 @@ jobs:
         run: sudo apt-get install -y gettext
 
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Python ${{ matrix.python }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v3
         with:
           python-version: ${{ matrix.python }}
 
