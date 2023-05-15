@@ -16,7 +16,7 @@ class PrivateFile:
         self.parent_object = parent_object
 
     def __repr__(self):
-        return '<PrivateFile: {}>'.format(self.relative_name)
+        return f'<PrivateFile: {self.relative_name}>'
 
     @cached_property
     def full_path(self):

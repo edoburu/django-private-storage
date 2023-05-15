@@ -16,7 +16,7 @@ from django.utils.module_loading import import_string
 from django.views.static import serve, was_modified_since
 
 
-@lru_cache()
+@lru_cache
 def get_server_class(path):
     if '.' in path:
         return import_string(path)
