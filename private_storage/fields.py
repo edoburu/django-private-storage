@@ -4,7 +4,6 @@ import os
 import posixpath
 import warnings
 
-import django
 from django.core import checks
 from django.core.exceptions import ValidationError
 from django.core.files.uploadedfile import UploadedFile
@@ -90,11 +89,8 @@ class PrivateFileField(models.FileField):
             path_parts.extend([self.storage.get_valid_name(dir) for dir in extra_dirs])
 
         path_parts.append(self._get_clean_filename(filename))
-        if django.VERSION >= (1, 10):
-            filename = posixpath.join(*path_parts)
-            return self.storage.generate_filename(filename)
-        else:
-            return os.path.join(*path_parts)
+        filename = posixpath.join(*path_parts)
+        return self.storage.generate_filename(filename)
 
     def _get_clean_filename(self, filename):
         # As of Django 1.10+, file names are no longer cleaned locally, but cleaned by the storage.
