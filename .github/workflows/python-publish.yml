@@ -42,9 +42,9 @@ jobs:
         python setup.py sdist --format=gztar bdist_wheel
         
     - name: Publish package
-      uses: pypa/gh-action-pypi-publish@master
+      uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
-        repository_url: https://upload.pypi.org/legacy/
+        repository-url: https://upload.pypi.org/legacy/
         
