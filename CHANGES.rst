@@ -1,6 +1,13 @@
 Changelog
 =========
 
+Changes in 3.1.1 (2023-10-09)
+---------------------------
+
+* Fixed compatibility for django-storages
+* Clean Code
+
+
 Changes in 3.1 (2023-05-12)
 ---------------------------
 
