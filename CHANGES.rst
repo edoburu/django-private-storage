@@ -1,6 +1,11 @@
 Changelog
 =========
 
+Changes in 3.2 (2025-02-20)
+---------------------------
+* Added support to Python 3.10
+* Added support to Django 5.0, 5.1
+
 Changes in 3.1.1 (2023-10-09)
 ---------------------------
 
