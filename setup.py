@@ -52,7 +52,7 @@ setup(
     url='https://github.com/edoburu/django-private-storage',
     download_url='https://github.com/edoburu/django-private-storage/zipball/master',
 
-    packages=find_packages(exclude=('example*',)),
+    packages=find_packages(exclude=('example*',), include=['private_storage/locale/',]),
     include_package_data=True,
 
     #test_suite = 'runtests',
@@ -62,7 +62,7 @@ setup(
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
+        'License-Expression :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
