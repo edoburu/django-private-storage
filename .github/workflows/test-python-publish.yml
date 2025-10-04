@@ -34,7 +34,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install -U pip
-        python -m pip install -U django django-storages boto3 wheel
+        python -m pip install -U django django-storages boto3 wheel setuptools
 
     - name: Build package
       run: |
