@@ -349,7 +349,7 @@ We use tox to run the test suite on different versions locally (and travis-ci to
 
 To tun the test suite locally, please make sure your python environment has tox and django installed::
 
-    python3.6 -m pip install tox django
+    python3 -m pip install tox django
 
 And then simply execute tox to run the whole test matrix::
 
