@@ -52,7 +52,7 @@ setup(
     url='https://github.com/edoburu/django-private-storage',
     download_url='https://github.com/edoburu/django-private-storage/zipball/master',
 
-    packages=find_packages(exclude=('example*',), include=['private_storage/locale/',]),
+    packages=find_packages(exclude=('example*',)),
     include_package_data=True,
 
     #test_suite = 'runtests',
