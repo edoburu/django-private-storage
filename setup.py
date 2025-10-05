@@ -36,11 +36,11 @@ def find_version(*parts):
 setup(
     name='django-private-storage',
     version=find_version('private_storage', '__init__.py'),
-    license='Apache 2.0',
+    license='License-Expression :: OSI Approved :: Apache-2.0',
 
     install_requires=[],
     requires=[
-        'Django (>=1.11)',
+        'Django (>=2.2)',
     ],
 
     description='Private media file storage for Django projects',
@@ -52,7 +52,7 @@ setup(
     url='https://github.com/edoburu/django-private-storage',
     download_url='https://github.com/edoburu/django-private-storage/zipball/master',
 
-    packages=find_packages(exclude=('example*',)),
+    packages=find_packages(exclude=('example*',), include=['private_storage/locale/',]),
     include_package_data=True,
 
     #test_suite = 'runtests',
@@ -62,7 +62,6 @@ setup(
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
@@ -71,6 +70,7 @@ setup(
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: 3.9',
         'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.12',
         'Framework :: Django',
         'Framework :: Django :: 2.2',
         'Framework :: Django :: 3.0',
@@ -81,6 +81,7 @@ setup(
         'Framework :: Django :: 4.2',
         'Framework :: Django :: 5.0',
         'Framework :: Django :: 5.1',
+        'Framework :: Django :: 5.2',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Application Frameworks',
