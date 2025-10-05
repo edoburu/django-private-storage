@@ -18,10 +18,10 @@ jobs:
         include:
           # Django 2.2
           - django: "2.2"
-            python: "3.6"
+            python: "3.8"
           # Django 3.2
           - django: "3.2"
-            python: "3.6"
+            python: "3.8"
           # Django 4.2
           - django: "4.2"
             python: "3.8"
