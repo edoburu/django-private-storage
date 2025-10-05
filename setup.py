@@ -36,7 +36,7 @@ def find_version(*parts):
 setup(
     name='django-private-storage',
     version=find_version('private_storage', '__init__.py'),
-    license='Apache 2.0',
+    license='License-Expression :: OSI Approved :: Apache-2.0',
 
     install_requires=[],
     requires=[
@@ -62,7 +62,6 @@ setup(
         'Environment :: Web Environment',
         'Framework :: Django',
         'Intended Audience :: Developers',
-        'License-Expression :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
